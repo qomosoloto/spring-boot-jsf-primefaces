@@ -15,3 +15,4 @@
 
 #其他
 1.  使用@ManagedBean注解，只是方便在xhtml中代码提示方便使用，真正起作用的是@Componet注解。
+2.  pom.xml中找不到的依赖，对应看在libs文件下有没有，可以通过mvn install:install-file命令来安装到maven local repository.
