@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" style="width: 90%; height: 70%;"
+              modal="true" closeOnEscape="true" draggable="true"
+              onShow="initializeDetail();PF('detailDialog').initPosition();"
+              position="top center"
+              header="产品详情">
+        <h:form id="save_merchant_form">
+            <div style="max-height: 720px;min-height: 400px;width: 100%;overflow: auto;">
+                <p:tabView id="tabView" onTabShow="PF('detailDialog').initPosition();">
+                    <p:tab title="产品基本信息">
+                        <h:form id="save_merchant_form1">
+                            <p:inputText style="display: none;" value="#{productBean.token}" widgetVar="up_toke"
+                                         id="up_toke"/>
+
+                            <p:inputText style="display: none;" value="#{productBean.selectedProduct.codeSn}"
+                                         widgetVar="productCodeSn"
+                                         id="productCodeSn"/>
+
+                            <p:inputText style="display: none;" value="#{productBean.selectedProductVo.jsonInfo.photos}"
+                                         widgetVar="detail_photos" id="detail_photos"/>
+
+                            <p:inputText style="display: none;" value="#{productBean.selectedProduct.picture}"
+                                         widgetVar="preview_photo" id="preview_photo"/>
+
+                            <input type="hidden" id="url-now"/>
+
+                            <!--0-preview photo,1-detai photos-->
+                            <input type="hidden" id="photo_type"/>
+
+                            <p:growl id="growl_save" showDetail="true" sticky="false"/>
+                            <h:outputScript library="js" name="moxie.js"/>
+                            <h:outputScript library="js" name="plupload.dev.js"/>
+                            <h:outputScript library="js" name="qiniu.js"/>
+                            <!--<h:outputScript library="js" name="jquery-1.9.1.min.js"/>-->
+                            <h:outputScript library="js" name="photo.js"/>
+
+                            <h:outputScript library="js" name="ZeroClipboard.js"/>
+                            <h:outputStylesheet library="css" name="upload.css"/>
+                            <p:panelGrid styleClass="detailPanelGrid">
+                                <p:row>
+                                    <p:column colspan="4" style="background-color: #aaaaaa;">产品基本属性</p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="name" value="产品名称"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:inputText id="name" value="#{productBean.selectedProduct.name}"
+                                                     required="true"
+                                                     validatorMessage="产品名称不能为空">
+                                            <f:validateLength minimum="1" maximum="255"/>
+                                        </p:inputText>
+                                        <h:inputHidden value="#{productBean.selectedProduct.longName}"/>
+                                    </p:column>
+
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="category" value="产品类目"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:selectOneRadio id="category" required="true" requiredMessage="产品类目必须选择"
+                                                          value="#{productBean.selectedProduct.queryCategory}">
+                                            <f:selectItem itemLabel="娱乐" itemValue="10000"/>
+                                            <f:selectItem itemLabel="美食" itemValue="10001"/>
+                                            <f:selectItem itemLabel="丽人" itemValue="10002"/>
+                                            <f:selectItem itemLabel="生活" itemValue="10003"/>
+                                            <f:selectItem itemLabel="亲子" itemValue="10004"/>
+                                            <f:selectItem itemLabel="旅游" itemValue="10005"/>
+                                            <f:selectItem itemLabel="其他" itemValue="10006"/>
+                                        </p:selectOneRadio>
+                                    </p:column>
+
+                                </p:row>
+
+                                <p:row>
+
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="type" value="产品类型"/>
+                                    </p:column>
+                                    <p:column colspan="1">
+
+                                        <p:selectOneRadio id="type" required="true" requiredMessage="产品类目必须选择"
+                                                          value="#{productBean.selectedProduct.productType}">
+                                            <f:selectItem itemLabel="虚拟产品" itemValue="VIRTUAL"/>
+                                            <f:selectItem itemLabel="实物产品" itemValue="PHYSICAL"/>
+                                        </p:selectOneRadio>
+                                    </p:column>
+
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="ori" value="成本价(元)"/>
+
+                                    </p:column>
+                                    <p:column colspan="1">
+                                        <p:inputText id="ori" required="true" requiredMessage="成本价不能为空"
+                                                     value="#{productBean.selectedProductVo.jsonInfo.productCost}">
+                                        </p:inputText>
+                                    </p:column>
+
+
+                                </p:row>
+
+
+                                <p:row rendered="#{productBean.productType==1}">
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="snCodeExpireDate" value="SN码有效期"/>
+                                    </p:column>
+                                    <p:column colspan="1">
+                                        <p:calendar id="snCodeExpireDate"
+                                                    value="#{productBean.selectedProductVo.jsonInfo.snCodeExpireDate}"
+                                                    pattern="yyyy-MM-dd hh:MM:dd" readonlyInput="true" required="true"
+                                                    validatorMessage="必须输入SN码有效期"/>
+                                    </p:column>
+
+                                    <p:column colspan="2">
+                                        <p:fileUpload id="upload" fileUploadListener="#{prepaidCard.handleFileUpload}"
+                                                      update="@this"
+                                                      label="批量导入SN码" mode="simple" auto="true"/>
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column colspan="4">
+                                        <p:outputPanel layout="block" style="text-align: center;">
+                                            <p:commandButton value="保存" actionListener="#{productBean.saveProduct}"
+                                                             process="save_merchant_form:tabView:save_merchant_form1"
+                                                             update=":form1,:save_merchant_form" icon="ui-icon-check"
+                                                             oncomplete="initializeDetail()"
+                                                             validateClient="true">
+                                            </p:commandButton>
+
+                                            <p:commandButton process="@none" update="@none" value="返回"
+                                                             icon="ui-icon-close"
+                                                             onclick="PF('detailDialog').hide()">
+                                            </p:commandButton>
+                                        </p:outputPanel>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:tab>
+
+
+                    <p:tab title="产品相片和HTML编辑">
+                        <h:form id="save_merchant_form2">
+                            <p:panelGrid styleClass="detailPanelGrid">
+                                <p:row>
+                                    <p:column colspan="1">
+                                        预览图
+                                    </p:column>
+                                    <p:column colspan="3">
+
+
+                                        <script type="text/javascript">
+
+                                            function initializeDetail() {
+                                                var productCodeSn = PF('productCodeSn').getJQ().val();
+                                                console.info("productCodeSn ", productCodeSn);
+                                                if ($.trim(productCodeSn) == "") {
+                                                    $("#fileToUpload1").hide();
+                                                    $("#fileToUpload2").hide();
+                                                    $(".warn-message").show();
+
+                                                } else {
+                                                    $("#fileToUpload1").show();
+                                                    $("#fileToUpload2").show();
+                                                    $(".warn-message").hide();
+                                                    createUploader1();
+                                                    createUploader2();
+
+                                                    var preview_photo = PF('preview_photo').getJQ().val();
+
+                                                    if (!preview_photo || preview_photo == undefined || null == preview_photo) {
+
+                                                    } else {
+                                                        var li = "&lt;li&gt;&lt;img  src='http://wangyuxin.qiniudn.com/" + preview_photo + "?imageView2/1/w/240/h/160'&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;" + 'http://wangyuxin.qiniudn.com/' + preview_photo + "?imageView2/1/w/240/h/160&lt;/p&gt;&lt;p&gt;" + 'http://wangyuxin.qiniudn.com/' + preview_photo + "?imageView2/1/w/320/h/240&lt;/p&gt;&lt;/li&gt;";
+                                                        $("#photo_list1").append(li);
+                                                    }
+                                                    var detail_photos = PF('detail_photos').getJQ().val();
+
+
+                                                    if (!detail_photos || detail_photos == undefined || null == detail_photos) {
+
+                                                    } else {
+                                                        console.info("detail_photos------------------", detail_photos);
+                                                        $.each(JSON.parse(detail_photos), function (i, o) {
+                                                            var li = "&lt;li&gt;&lt;img  src='http://wangyuxin.qiniudn.com/" + o.url + "?imageView2/1/w/240/h/160'&gt;&lt;p&gt;" + 'http://wangyuxin.qiniudn.com/' + o.url + "?imageView2/1/w/240/h/160&lt;/p&gt;&lt;p&gt;" + 'http://wangyuxin.qiniudn.com/' + o.url + "?imageView2/1/w/320/h/240&lt;/p&gt;&lt;/li&gt;";
+                                                            $("#photo_list2").append(li);
+                                                        });
+                                                    }
+                                                }
+
+
+                                            }
+
+                                            //  获取七牛上传token
+                                            var token = PF('up_toke').getJQ().val();
+                                            /**
+                                             *创建文件上传控件实例
+                                             * */
+                                            function createUploader1() {
+                                                Photo.createUploader('fileToUpload1', 'container1', token);
+                                            }
+
+
+                                            /**
+                                             *创建文件上传控件实例
+                                             * */
+                                            function createUploader2() {
+                                                //  如果是新建，则不允许上传
+
+                                                console.info("create uploader ..................... ");
+                                                Photo.createUploader('fileToUpload2', 'container2', token);
+                                            }
+
+
+                                            /**
+                                             * prieviewPhotos
+                                             * @param ss
+                                             * @param name
+                                             */
+                                            function upload(type, url, name) {
+
+                                                if ($.trim($("#url-now").val()) == "") {
+                                                    alert("请选择图片");
+                                                    return;
+                                                }
+                                                console.info("---------------------remoteCommand params ------------- ", type, "---", url, "--", name);
+                                                //普通的html组件调用这个js
+                                                //将想要传递到后台的动态值封装成json格式的值，传给p:remoteCommand,然后由这个组件传给bean方法
+                                                processSelection([{"name": 'type', "value": type}, {
+                                                    "name": 'url',
+                                                    "value": url
+                                                }, {
+                                                    "name": 'name',
+                                                    "value": name
+                                                }]);
+                                            }
+
+                                            /**
+                                             * prieviewPhotos
+                                             * @param ss
+                                             * @param name
+                                             */
+                                            function upload1(type, url, name) {
+                                                if ($.trim($("#url-now").val()) == "") {
+                                                    alert("请选择图片");
+                                                    return;
+                                                }
+                                                console.info("---------------------only preview ------------- ", type,
+                                                        "---", url, "--", name);
+                                                //普通的html组件调用这个js
+                                                //将想要传递到后台的动态值封装成json格式的值，传给p:remoteCommand,然后由这个组件传给bean方法
+                                                processSelection([{"name": 'type', "value": type}, {
+                                                    "name": 'url',
+                                                    "value": url
+                                                }, {
+                                                    "name": 'name',
+                                                    "value": name
+                                                }]);
+                                            }
+
+
+                                        </script>
+
+                                        <div id="container1">
+                                            <p class="warn-message">新建商品必须先保存后才能上传图片</p>
+                                            <a class="btn btn-lg btn-yellow " id="fileToUpload1"
+                                               href="javascript:;" style="z-index: 1; width: 20%;">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <sapn>选择图片</sapn>
+                                            </a>
+
+                                            <div class="msg" style="display: block;">
+
+                                                <ul id="photo_list1" class="filelist">
+
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <p:remoteCommand name="processSelection" partialSubmit="true" process="@form"
+                                                         action="#{productBean.savePreviewPhoto}"
+                                                         oncomplete="processResult()"/>
+
+
+                                        <script type="text/javascript">
+
+                                            function processResult() {
+                                                //PF('upload_photo').hide();
+                                            }
+                                        </script>
+
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column colspan="1">
+                                        详情图
+                                    </p:column>
+                                    <p:column colspan="3">
+
+
+                                        <div id="container2">
+                                            <p class="warn-message">新建商品必须先保存后才能上传图片</p>
+                                            <a class="btn btn-lg btn-yellow " id="fileToUpload2"
+                                               href="javascript:;" style="z-index: 1; width: 20%;">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <sapn>选择图片</sapn>
+                                            </a>
+
+                                            <div class="msg" style="display: block;">
+
+                                                <ul id="photo_list2" class="filelist">
+
+                                                </ul>
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column colspan="1">
+                                        <p:outputLabel for="detail" value="商品详情"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:editor id="detail" value="#{productBean.selectedProduct.info}"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column colspan="4">
+                                        <p:outputPanel layout="block" style="text-align: center;">
+                                            <p:commandButton value="保存" validateClient="true" icon="ui-icon-check"
+                                                             oncomplete="initializeDetail()"
+                                                             process="save_merchant_form:tabView:save_merchant_form2"
+                                                             actionListener="#{productBean.saveProduct}"
+                                                             update=":form1,:save_merchant_form">
+                                            </p:commandButton>
+
+                                            <p:commandButton process="@none" update="@none" value="返回"
+                                                             icon="ui-icon-close"
+                                                             onclick="PF('detailDialog').hide()">
+                                            </p:commandButton>
+                                        </p:outputPanel>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </h:form>
+    </p:dialog>
+</f:view>
+</html>

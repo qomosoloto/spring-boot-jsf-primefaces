@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+        >
+<body>
+<ui:composition>
+
+
+    <h:form id="menu_form">
+
+        <div class="ui-grid-row ui-menu ui-menubar ui-widget ui-widget-content ui-corner-all ui-helper-clearfix">
+            <div class="ui-grid-col-11 ">
+                <p:menubar autoDisplay="true">
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <p:submenu label="系统参数配置" icon="ui-icon-plus">
+
+                        <p:menuitem value="初始化商户数据"
+                                    action="#{initializeBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                        <p:menuitem value="首页参数设置"
+                                    action="#{globalDictBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <p:submenu label="数据导入" icon="ui-icon-plus">
+
+                        <p:menuitem value="充值卡数据" id="prepaidCardImportMenu"
+                                    action="#{dataImportBean.prepaidCardImport}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                        <p:menuitem value="优惠券导入" id="dataImportBean"
+                                    action="#{dataImportBean.couponImport}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <p:submenu label="产品管理" icon="ui-icon-plus">
+
+                        <p:menuitem value="产品列表" id="productMenu"
+                                    action="#{productBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <p:submenu label="商品管理" icon="ui-icon-card">
+
+                        <p:menuitem value="商品列表" id="merchandiseMenu"
+                                    action="#{merchandiseBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+
+                    <p:submenu label="用户管理" icon="ui-icon-plus">
+
+                        <p:menuitem value="用户列表" id="userMenu"
+                                    action="#{userBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                        <p:menuitem value="灰名单" id="greyMenu"
+                                    action="#{userBean.initGreyList}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                        <p:menuitem value="黑名单" id="blackMenu"
+                                    action="#{userBean.initBlackList}"
+                                    icon="ui-icon-folder-collapsed"/>
+
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <p:submenu label="商户管理" icon="ui-icon-plus">
+
+                        <p:menuitem value="商户列表" id="merchantMenu"
+                                    action="#{merchantBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+
+                    <p:submenu label="订单管理" icon="ui-icon-plus">
+
+                        <p:menuitem value="订单列表" id="orderMenu"
+                                    action="#{orderBean.init}"
+                                    icon="ui-icon-folder-collapsed"/>
+                    </p:submenu>
+                    <p:separator
+                            style="  background: #A8A8A8;border: none; width: 1px; clear: none;  height: 22px; margin: 4px 6px 0; box-shadow: none;"/>
+                    <f:facet name="options">
+                        <p:commandButton value="退出" action="#{login.logout()}"
+                                         icon="ui-icon-extlink"/>
+                    </f:facet>
+                </p:menubar>
+            </div>
+
+            <div class="ui-grid-col-1">
+                <h:panelGrid columns="2" cellpadding="1"
+                             styleClass="ui-menu ui-menubar ui-widget ui-widget-content ui-corner-all ui-helper-clearfix">
+                    <h:outputText value="主题"/>
+
+
+                    <p:themeSwitcher id="themeSelectMenu" value="#{userSettings.currentTheme}" var="theme"
+                                     styleClass="theme-class"
+                                     effect="fade">
+                        <f:converter binding="#{themeConverter}"/>
+                        <f:selectItems var="t"
+                                       value="#{userSettings.availableThemes}"
+                                       itemLabel="#{t.name}"
+                                       itemValue="#{t}"/>
+                        <p:column>
+                            <p:graphicImage value="#{theme.image}" rendered="${not empty theme.image}"/>
+                        </p:column>
+                        <p:column>
+                            #{theme.name}
+                        </p:column>
+                    </p:themeSwitcher>
+                </h:panelGrid>
+            </div>
+
+        </div>
+
+        <p:growl id="growl"/>
+
+        <p:blockUI block="form1" trigger="orderMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+        <p:blockUI block="form1" trigger="productMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+        <p:blockUI block="form1" trigger="prepaidCardImportMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+        <p:blockUI block="form1" trigger="merchandiseMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+
+        <!--<p:submenu label="活动管理" icon="ui-icon-card">-->
+        <!--<p:menuitem value="活动列表" id="activityMenu"-->
+        <!--action="{activityBean.init}"-->
+        <!--icon="ui-icon-folder-collapsed"/>-->
+        <!--</p:submenu>-->
+        <!--<p:blockUI block="form1" trigger="activityMenu">-->
+        <!--数据加载中，请稍等<br/>-->
+        <!--<p:graphicImage name="/images/ajax-loader.gif"/>-->
+        <!--</p:blockUI>-->
+
+        <p:blockUI block="form1" trigger="userMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+        <p:blockUI block="form1" trigger="greyMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+        <p:blockUI block="form1" trigger="blackMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+        <p:blockUI block="form1" trigger="merchantMenu">
+            数据加载中，请稍等<br/>
+            <p:graphicImage name="/images/ajax-loader.gif"/>
+        </p:blockUI>
+
+        <!--<p:submenu label="财务管理" icon="ui-icon-plus">-->
+
+        <!--<p:menuitem value="财务管理" id="financeMenu"-->
+        <!--action="financeBean.init"-->
+        <!--icon="ui-icon-folder-collapsed"/>-->
+
+        <!--</p:submenu>-->
+        <!--<p:blockUI block="form1" trigger="financeMenu">-->
+        <!--数据加载中，请稍等<br/>-->
+        <!--<p:graphicImage name="/images/ajax-loader.gif"/>-->
+        <!--</p:blockUI>-->
+
+    </h:form>
+
+</ui:composition>
+</body>
+</html>

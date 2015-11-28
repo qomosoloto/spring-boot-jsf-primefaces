@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <h:form id="form-">
+                <p:panel>
+                    <div class="ui-grid-row">
+                        <!--<h:panelGrid columns="4" cellpadding="5" id="addPanel-">-->
+                        <div class="ui-grid-col-4">
+                            <p:outputLabel value="name" for="search_name"/>
+                            <p:inputText id="search_name" value="#{infoBean.selected.name}"/>
+                        </div>
+                        <div class="ui-grid-col-4">
+                            <p:outputLabel value="age" for="search_age"/>
+                            <p:inputText id="search_age" value="#{infoBean.selected.age}"/>
+                        </div>
+                        <div class="ui-grid-col-4">
+                            <p:outputLabel value="type" for="search_type"/>
+                            <p:selectOneMenu id="search_type" value="#{infoBean.selected.type}" style="width:125px">
+                                <!--选项里的itemValue不该使用ordinal,应该用name-->
+                                <f:selectItem itemLabel="选择type" itemValue=""/>
+                                <f:selectItem itemLabel="Add" itemValue="Add"/>
+                                <f:selectItem itemLabel="Remove" itemValue="Remove"/>
+                                <f:selectItem itemLabel="Update" itemValue="Update"/>
+                                <f:selectItem itemLabel="Query" itemValue="Query"/>
+                            </p:selectOneMenu>
+                        </div>
+                        <!--</h:panelGrid>-->
+                    </div>
+                    <div class="ui-grid-row">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton value="搜索" styleClass=""
+                                             update=":form1:infoTable" process="@this"
+                                             actionListener="#{infoBean.paramSearch}"/>
+                            <p:commandButton value="重置" styleClass=""
+                                             actionListener="#{infoBean.save}"
+                                             update=":form-,:form1:infoTable"/>
+                        </p:outputPanel>
+
+                    </div>
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="content2">
+
+
+            <h:form id="form1">
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable resizableColumns="true" var="info" value="#{infoBean.list}" paginator="true" rows="10"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             paginatorPosition="bottom" editable="true"
+                             emptyMessage="no data........"
+                             rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+                    <!--行内编辑-->
+                    <p:ajax event="rowEdit" listener="#{infoBean.onRowEdit}" update=":form1:msgs,infoTable"/>
+                    <p:ajax event="rowEditCancel" listener="#{infoBean.onRowCancel}" update=":form1:msgs"/>
+
+                    <!--<p:column style="width:26px">-->
+                    <!--<p:rowToggler/>-->
+                    <!--</p:column>-->
+                    <p:column headerText="id" style="width:30px">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.id}"/></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" readonly="true" value="#{info.id}"
+                                                               style="width:100%"/></f:facet>
+                        </p:cellEditor>
+
+                    </p:column>
+                    <p:column headerText="name" sortBy="#{info.name}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.name}"/></f:facet>
+                            <f:facet name="input"><p:inputText id="nameInput" value="#{info.name}"
+                                                               style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{info.name}">-->
+
+                        <!--</h:outputText>-->
+                    </p:column>
+                    <p:column headerText="age" sortBy="#{info.age}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.age}"/></f:facet>
+                            <f:facet name="input"><p:inputText id="ageInput" value="#{info.age}"
+                                                               style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{info.age}">-->
+
+                        <!--</h:outputText>-->
+                    </p:column>
+                    <p:column headerText="isActive" sortBy="#{info.isActive}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.isActive}"/></f:facet>
+                            <f:facet name="input">
+                                <!--<p:inputText id="nameInput"  value="#{info.isActive}" style="width:100%"/>-->
+                                <p:selectBooleanButton id="isActiveSe" value="#{info.isActive}" onLabel="Yes"
+                                                       offLabel="No" style="width:60px"/>
+                            </f:facet>
+                        </p:cellEditor>
+                        <!--<h:outputText value="#{info.isActive}">-->
+
+                        <!--</h:outputText>-->
+                    </p:column>
+                    <p:column headerText="type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.type}"/></f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu id="type_" value="#{info.type}" style="width:125px">
+                                    <!--选项里的itemValue不该使用ordinal,应该用name-->
+                                    <f:selectItem itemLabel="Add" itemValue="Add"/>
+                                    <f:selectItem itemLabel="Remove" itemValue="Remove"/>
+                                    <f:selectItem itemLabel="Update" itemValue="Update"/>
+                                    <f:selectItem itemLabel="Query" itemValue="Query"/>
+                                </p:selectOneMenu>
+
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column headerText="crtDate" sortBy="#{info.crtDate}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{info.crtDate}"/></f:facet>
+                            <f:facet name="input">
+                                <p:calendar readonlyInput="true" value="#{info.crtDate}" pattern="yyyy-MM-dd"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column style="width:40px" headerText="编辑">
+                        <p:rowEditor/>
+                    </p:column>
+
+                    <p:column headerText="操作">
+                        <!--update-->
+
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton value="编辑更多">
+                                <p:ajax event="click" listener="#{infoBean.select(info)}"
+                                        oncomplete="PF('updateDialog').show()"
+                                        update=":updateDialog,:form1:infoTable"/>
+                            </p:commandButton>
+                            <p:commandButton value="删除">
+                                <p:ajax event="click" listener="#{infoBean.select(info)}"
+                                        oncomplete="PF('delDialog').show()"/>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+                    </p:column>
+
+
+                </p:dataTable>
+            </h:form>
+
+            <p:commandButton value="add" onclick="PF('addDialog').show()"/>
+
+            <!--delete dialog-->
+
+            <p:dialog header="Are you sure?" widgetVar="delDialog" modal="true">
+                <h:form id="form2">
+                    <h:panelGrid columns="2" cellpadding="5" id="addPanel">
+                        <f:facet name="facet1">
+                            <p:outputLabel value="确定删除吗 ?"/>
+                        </f:facet>
+
+                        <p:commandButton value="yes" actionListener="#{infoBean.delete}" update=":form1:infoTable"
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                         oncomplete="PF('delDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+                                         oncomplete="PF('delDialog').hide()"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="提示" widgetVar="delInnerDialog" modal="true">
+                <h:form id="form_inner_delete">
+                    <h:panelGrid columns="2" cellpadding="5" id="addPanel">
+                        <f:facet name="facet1">
+                            <p:outputLabel value="确定删除吗 ?"/>
+                        </f:facet>
+
+                        <p:commandButton value="yes" actionListener="#{infoBean.deleteInner}"
+                                         update=":tabView:json_data_inner_form:json_data_table,:form1:infoTable"
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                         oncomplete="PF('delInnerDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+                                         oncomplete="PF('delInnerDialog').hide()"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!--update dialog-->
+            <p:dialog header="提示" widgetVar="delPhotoDialog" modal="true">
+                <h:form id="form_photo_delete">
+                    <h:panelGrid columns="2" cellpadding="5" id="addPanel">
+                        <f:facet name="facet1">
+                            <p:outputLabel value="确定删除吗 ?"/>
+                        </f:facet>
+
+                        <p:commandButton value="yes" actionListener="#{infoBean.deletePhoto}"
+                                         update=":form1:infoTable,:tabView:form_json_data_photo"
+                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                         oncomplete="PF('delPhotoDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+                                         oncomplete="PF('delPhotoDialog').hide()"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog style="min-width: 90%;max-height: 90%;min-height: 60%;overflow: scroll;" header="编辑更多信息"
+                      id="updateDialog" onShow="initCopy();"
+                      position="center,top" widgetVar="updateDialog" modal="true">
+                <script type="text/javascript">
+                    //  页面加载完成后调用，会导致 复制 按钮不可点，，，，
+                    function initCopy() {
+                        var client = new ZeroClipboard(document.getElementsByClassName("copy-description"));
+                        client.on('ready', function (event) {
+
+                            client.on('copy', function (event) {
+                                event.clipboardData.setData('text/plain', $(event.target).prev().val());
+                            });
+
+                            client.on('aftercopy', function (event) {
+
+                            });
+                        });
+                    }
+                </script>
+                <p:tabView id="tabView" style="width: 100%;">
+                    <p:tab style="width: 100%;" title="htmlStr">
+                        <h:form style="width: 100%;" id="form_htmlStr">
+                            <!--<h:panelGrid columns="2" cellspacing="5" cellpadding="8">-->
+                            <!--<p:outputLabel value="id"/>-->
+                            <!--<p:inputText value="#{infoBean.selected.id}" readonly="true"/>-->
+
+                            <div class="ui-grid-col-12">
+                                <p:outputLabel value="htmlStr"/>
+                                <p:editor value="#{infoBean.selected.htmlStr}"/>
+                            </div>
+                            <p:outputPanel layout="block" style="text-align: right">
+                                <br/>
+                                <p:commandButton value="confirm" oncomplete="PF('updateDialog').hide()"
+                                                 actionListener="#{infoBean.update}"
+                                                 update="@(#form_htmlStr)"/>
+                            </p:outputPanel>
+                            <!--</h:panelGrid>-->
+                        </h:form>
+
+                    </p:tab>
+
+                    <p:tab style="width: 100%;" title="json data inner">
+                        <!--<div class="ui-grid-col-12">-->
+                        <h:form style="width: 100%;" id="json_data_inner_form">
+                            <!--<h:panelGrid columns="2" cellspacing="5" cellpadding="8">-->
+
+
+                            <!--<h:outputLabel value="jsonData&#45;&#45;Inner"/>-->
+                            <!--dataTable必须放在form里，否则事件中取对象有问题-->
+                            <p:dataTable editable="true" id="json_data_table"
+                                         value="#{infoBean.selected.jsonBean.jsonBeanList}" var="bean">
+
+                                <f:facet name="header">
+                                    <h:outputLabel value="ｉｎｎｅｒ数据"/>
+                                </f:facet>
+                                <!--编辑之前初始化工作，当前json数据位于list中位置-->
+                                <p:ajax event="rowEditInit" listener="#{infoBean.jsonDataInnerEditInit}"/>
+                                <p:ajax event="rowEdit" listener="#{infoBean.jsonDataEdit}"
+                                        update=":tabView:json_data_inner_form:json_data_table"/>
+                                <p:ajax event="rowEditCancel" listener="#{infoBean.jsonDataCancelEdit}"
+                                        update=":tabView:json_data_inner_form:json_data_table"/>
+                                <p:column headerText="firstname">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{bean.firstName}"></h:outputText>
+
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:inputText style="color:#000;" value="#{bean.firstName}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="lastName">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{bean.lastName}"></h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:inputText style="color:#000;" value="#{bean.lastName}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="instrument">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="#{bean.instrument}"></h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:inputText style="color:#000;" value="#{bean.instrument}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="">
+                                    <p:commandButton value="删除">
+                                        <!--json数据的删除-->
+                                        <p:ajax event="click" listener="#{infoBean.select(bean)}"
+                                                oncomplete="PF('delInnerDialog').show()"/>
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column width="40" headerText="编辑">
+                                    <p:rowEditor/>
+                                </p:column>
+
+                                <f:facet name="footer">
+
+                                    <h:form id="add_inner_form">
+
+                                        <p:panelGrid columns="6">
+                                            <f:facet name="header">新增</f:facet>
+                                            <p:outputLabel value="firstName" for="firstName_new"/>
+                                            <p:inputText value="#{infoBean.newInner.firstName}" id="firstName_new"/>
+
+                                            <p:outputLabel value="lastName" for="lastName_new"/>
+                                            <p:inputText value="#{infoBean.newInner.lastName}" id="lastName_new"/>
+
+                                            <p:outputLabel value="instrument" for="instrument"/>
+                                            <p:inputText value="#{infoBean.newInner.instrument}" id="instrument"/>
+                                        </p:panelGrid>
+
+                                        <p:outputPanel>
+                                            <p:commandButton id="add_inner_btn" actionListener="#{infoBean.saveInner}"
+                                                             process=":tabView:json_data_inner_form:json_data_table:add_inner_form"
+                                                             update=":form1:infoTable,:tabView:json_data_inner_form:json_data_table"
+                                                             value="确定"/>
+                                            <p:commandButton value="重置" type="reset">
+
+                                            </p:commandButton>
+                                        </p:outputPanel>
+                                    </h:form>
+                                </f:facet>
+
+                            </p:dataTable>
+
+                            <!--</h:panelGrid>-->
+                        </h:form>
+
+                        <!--</div>-->
+                    </p:tab>
+
+
+                    <p:tab style="width: 100%;" title="json data photo">
+                        <h:form>
+                            <p:remoteCommand name="processSelection" partialSubmit="true"
+                                             action="#{infoBean.savePhoto}"
+                                             update=":form1:infoTable,:tabView:form_json_data_photo"
+                                             oncomplete="processResult();"/>
+                            <script type="text/javascript">
+                                function upload() {
+
+                                }
+                                function processResult() {
+                                    console.info(".............process...result.......");
+                                }
+
+                                //                                        onBrowserStuff( [ { name: 'yourArg', value: 'yourValue' }, { name: 'yourOtherArg', value: 'yourOtherValue' } ] );
+
+                                function makeSelection(ss, name) {
+                                    console.info("上传完后自动执行" + ss);
+                                    makeSelection(ss, name);
+                                }
+
+                                function makeSelection(ss, name) {
+                                    if ($.trim($("#url-now").val()) == "") {
+                                        alert("请选择图片");
+                                        return;
+                                    }
+                                    //普通的html组件调用这个js
+                                    //将想要传递到后台的动态值封装成json格式的值，传给p:remoteCommand,然后由这个组件传给bean方法
+                                    processSelection([{"name": 'url', "value": ss}, {"name": 'name', "value": name}]);
+
+                                }
+                            </script>
+                        </h:form>
+
+                        <h:form>
+                            <p:inputText style="display: none;" value="#{token.token}" widgetVar="up_toke"
+                                         id="up_toke"/>
+                        </h:form>
+                        <h:form style="width: 100%;" id="form_json_data_photo">
+                            <!--<h:panelGrid columns="2" cellspacing="5" cellpadding="8">-->
+
+                            <!--<p:outputLabel value="上传图片"/>-->
+                            <!-- -->
+
+                            <!--<p:outputLabel value="JsonBean&#45;&#45;&#45;&#45;ListPhoto"/>-->
+
+
+                            <p:dataGrid var="photo" value="#{infoBean.selected.jsonBean.jsonPhotoList}" columns="3"
+                                        layout="grid" paginatorPosition="top"
+                                        rows="10" paginator="true" id="photos" style="width:90%;overflow: scroll;"
+                                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        rowsPerPageTemplate="6">
+
+                                <f:facet name="header">
+                                    <p:panelGrid>
+                                        <h:outputScript library="js" name="moxie.js"/>
+                                        <h:outputScript library="js" name="plupload.dev.js"/>
+                                        <h:outputScript library="js" name="qiniu.js"/>
+                                        <!--<h:outputScript library="js" name="jquery-1.9.1.min.js"/>-->
+                                        <h:outputScript library="js" name="photo.js"/>
+
+                                        <h:outputScript library="js" name="ZeroClipboard.js"/>
+
+                                        <script type="text/javascript">
+                                            var token = PF('up_toke').getJQ().val();
+                                            if ($.trim(token) != "") {
+                                                Photo.createUploader(token);
+                                            }
+
+                                        </script>
+                                        <div id="container1">
+                                            <a class="btn btn-lg btn-yellow " id="fileToUpload1"
+                                               href="#" style="z-index: 1; width: 20%;">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                <sapn>选择图片</sapn>
+                                            </a>
+
+
+                                        </div>
+                                        <div class="msg" style="display: none;">
+
+                                            <ul id="photo_list" class="filelist">
+
+                                            </ul>
+
+
+                                        </div>
+
+                                        <input type="hidden" id="url-now"/>
+                                    </p:panelGrid>
+                                </f:facet>
+
+                                <p:panel header="#{photo.name}" style="text-align:center">
+                                    <p:panelGrid columns="1" style="width:100%">
+                                        <p:row>
+
+                                            <p:graphicImage id="pic_url"
+                                                            url="http://#{photo.url}?imageMogr2/thumbnail/240x160>"/>
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:outputLabel for="photo_description" value="描述"/>
+                                            <h:outputText id="photo_description" value="#{photo.description}"/>
+                                        </p:row>
+
+
+                                        <p:row>
+
+                                            <p:outputLabel for="photo_resolution1" value="480x320"/>
+                                            <p:inputText readonly="true" id="photo_resolution1"
+                                                         widgetVar="photo_resolution1" style="width: 120px;"
+                                                         value="http://#{photo.url}?imageMogr2/thumbnail/480x320>"/>
+                                            <a class="copy-description"
+                                               data-clipboard-text="http://#{photo.url}?imageMogr2/thumbnail/480x320>"
+                                               href="javascript:;">复制</a>
+                                        </p:row>
+
+
+                                        <p:row>
+                                            <p:outputLabel for="photo_resolution2" value="240x160"/>
+                                            <p:inputText readonly="true" id="photo_resolution2"
+                                                         widgetVar="photo_resolution2" style="width: 120px;"
+                                                         value="http://#{photo.url}?imageMogr2/thumbnail/240x160>"/>
+                                            <a class="copy-description"
+                                               data-clipboard-text="http://#{photo.url}?imageMogr2/thumbnail/240x160>"
+                                               href="javascript:;">复制</a>
+                                        </p:row>
+
+
+                                        <!--update=":form:carDetail" oncomplete="PF('carDialog').show()"-->
+                                        <p:commandLink
+                                                title="View Detail">
+                                            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;"/>
+                                            <f:setPropertyActionListener value="#{photo}"
+                                                                         target="#{infoBean.selected}"/>
+                                        </p:commandLink>
+                                    </p:panelGrid>
+                                </p:panel>
+
+
+                            </p:dataGrid>
+
+
+                        </h:form>
+
+
+                    </p:tab>
+                </p:tabView>
+            </p:dialog>
+
+            <p:dialog header="add" widgetVar="addDialog" modal="true">
+                <h:form id="form3">
+                    <!--<h:panelGrid columns="2" cellpadding="5" id="addPanel">-->
+                    <div class="ui-grid-col-6">
+                        <p:outputLabel value="name"/>
+                        <p:inputText value="#{infoBean.selected.name}"/>
+                    </div>
+
+                    <div class="ui-grid-col-6">
+                        <p:outputLabel value="age"/>
+                        <p:inputText value="#{infoBean.selected.age}"/>
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:outputLabel value="isActive"/>
+                        <p:selectBooleanButton id="isActive" value="#{infoBean.selected.isActive}" onLabel="Yes"
+                                               offLabel="No" style="width:60px"/>
+                    </div>
+
+                    <div class="ui-grid-col-6">
+                        <p:outputLabel value="type"/>
+
+                        <p:selectOneMenu id="type" value="#{infoBean.selected.type}" style="width:125px">
+                            <f:selectItem itemLabel="Add" itemValue="Add"/>
+                            <f:selectItem itemLabel="Remove" itemValue="Remove"/>
+                            <f:selectItem itemLabel="Update" itemValue="Update"/>
+                            <f:selectItem itemLabel="Query" itemValue="Query"/>
+                        </p:selectOneMenu>
+
+                    </div>
+                    <div class="ui-grid-col-6">
+                        <p:outputLabel value="date"/>
+                        <p:calendar value="#{infoBean.selected.crtDate}" pattern="yyyy-MM-dd" readonlyInput="true"/>
+                    </div>
+                    <p:commandButton value="confirm" oncomplete="PF('addDialog').hide()"
+                                     actionListener="#{infoBean.saveBean}"
+                                     update=":form-,:form1:infoTable,form3"/>
+
+                    <!--</h:panelGrid>-->
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:dataTable resizableColumns="true" var="info" value="#{activityBean.list}" paginator="true"
+                                 rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 paginatorPosition="bottom" editable="true" rowKey="#{info.id}" selectionMode="single"
+                                 emptyMessage="no data........"
+                                 rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+                        <f:facet name="header" style="text-align: left;">
+                            <p:outputPanel layout="block" style="text-align: left;">
+                                <p:commandButton value="新增活动" icon="ui-icon-plus"
+                                        >
+                                    <p:ajax event="click" listener="#{activityBean.addNewEntity(0)}" update="@none"
+                                            process="@none"
+                                            oncomplete="PF('detailDialog').show()"/>
+                                </p:commandButton>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <!--此时selection属性的值应该是个ｌｉｓｔ-->
+                        <!--<p:column selectionMode="multiple" style="width:26px;text-align:center"/>-->
+
+                        <p:column headerText="序号" sortBy="#{info.sku.codeSn}" width="160">
+                            <h:outputText value="#{info.sku.codeSn}"/>
+                        </p:column>
+
+                        <p:column headerText="活动名" width="240">
+                            <h:outputText value="#{info.sku.product.name}"/>
+                        </p:column>
+                        <!--todo-->
+                        <p:column headerText="类型">
+                            <!--converter="#{activityTypeConverter}"-->
+                            <h:outputText value="#{info.json.actType}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="上架时间" width="140">
+                            <!--onlineTime-->
+                            <h:outputText value="#{info.json.onlineTime}"/>
+                        </p:column>
+
+                        <p:column headerText="下架时间" width="140">
+                            <!--offlineTime-->
+                            <h:outputText value="#{info.json.offlineTime}"/>
+                        </p:column>
+
+                        <p:column headerText="开启时间">
+                            <!--startTime converter="#{activityStartTimeConverter}" -->
+                            <h:outputText value="#{info.json.startTime}"/>
+                        </p:column>
+
+                        <p:column headerText="关闭时间">
+                            <!--endTime converter="#{activityEndTimeConverter}"-->
+                            <h:outputText value="#{info.json.endTime}"/>
+                        </p:column>
+
+                        <p:column headerText="PV">
+                            <h:outputText value="#{info.json.pv}"/>
+                        </p:column>
+
+                        <p:column headerText="UV">
+                            <h:outputText value="#{info.json.uv}"/>
+                        </p:column>
+
+                        <p:column headerText="上架状态">
+                            <h:outputText value="#{info.json.putawayStatus}"/>
+                        </p:column>
+
+                        <p:column headerText="状态">
+                            <h:outputText value="#{info.sku.entityStatus}"/>
+                        </p:column>
+
+                        <p:column headerText="唯一">
+                            <h:outputText value="#{info.json.unique}"/>
+                        </p:column>
+
+                        <p:column headerText="置顶">
+                            <h:outputText value="#{info.ifStick}"/>
+                        </p:column>
+
+                        <p:column headerText="操作１" width="93">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <p:commandLink value="上架">
+                                    <p:ajax event="click" listener="#{activityBean.selectEntity(info)}"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandLink>
+
+                                <p:commandLink value="下架">
+                                    <p:ajax event="click" listener="#{activityBean.selectEntity(info)}"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandLink>
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column headerText="操作２" width="186">
+                            <p:outputPanel layout="block" style="text-align: center;">
+
+                                <p:commandLink value="查看">
+                                    <p:ajax event="click" listener="#{activityBean.selectEntity(info)}"
+                                            update=":detailDialog"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandLink>
+
+                                <p:commandLink value="修改">
+                                    <p:ajax event="click" listener="#{activityBean.selectEntity(info)}"
+                                            update=":detailDialog"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandLink>
+
+                                <p:commandLink value="删除">
+                                    <p:ajax event="click" listener="#{activityBean.selectEntity(info)}"
+                                            update=":detailDialog"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandLink>
+
+
+                            </p:outputPanel>
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <ui:include src="detail.xhtml"/>
+
+            <ui:include src="../base/uploadPhoto.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

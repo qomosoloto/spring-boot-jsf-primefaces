@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－>小区管理
+        </f:facet>
+
+    </p:panel>
+
+    <h:form id="search_form">
+        <p:panel>
+
+            <div class="ui-grid-row">
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="小区名称"/>
+                    <p:inputText id="search_name" value="" placeholder="" type="text"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="省"/>
+                    <p:selectOneMenu id="search_province">
+                        <!--选项里的itemValue不该使用ordinal,应该用name-->
+                        <f:selectItem itemLabel="选择状态" itemValue=""/>
+                        <f:selectItem itemLabel="正常" itemValue="0"/>
+                        <f:selectItem itemLabel="冻结" itemValue="1"/>
+                        <f:selectItem itemLabel="全部" itemValue=""/>
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="市"/>
+                    <p:selectOneMenu id="search_city">
+                        <!--选项里的itemValue不该使用ordinal,应该用name-->
+                        <f:selectItem itemLabel="选择状态" itemValue=""/>
+                        <f:selectItem itemLabel="正常" itemValue="0"/>
+                        <f:selectItem itemLabel="冻结" itemValue="1"/>
+                        <f:selectItem itemLabel="全部" itemValue=""/>
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="区县"/>
+                    <p:selectOneMenu id="search_district">
+                        <!--选项里的itemValue不该使用ordinal,应该用name-->
+                        <f:selectItem itemLabel="选择状态" itemValue=""/>
+                        <f:selectItem itemLabel="正常" itemValue="0"/>
+                        <f:selectItem itemLabel="冻结" itemValue="1"/>
+                        <f:selectItem itemLabel="全部" itemValue=""/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+                <p:outputLabel value="加入时间"/>
+                <p:calendar showOn="button"/>至<p:calendar showOn="button"/>
+            </div>
+            <div class="ui-grid-row">
+                <p:outputPanel layout="block" style="text-align: center;">
+                    <p:commandButton value="搜索" icon="ui-icon-search">
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

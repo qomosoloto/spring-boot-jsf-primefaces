@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <h:form id="form1">
+
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable resizableColumns="true" var="info" value="#{globalDictBean.lazyDataModel}"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{add} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorPosition="top" editable="true" emptyMessage="no data........"
+                             currentPageReportTemplate="当前展示{startRecord} - {endRecord}条,共{totalRecords}条"
+                             rowKey="#{info.id}"
+                             rowsPerPageTemplate="5,10,15" id="infoTable" lazy="true">
+
+                    <f:facet name="{add}">
+                        <p:commandButton value="添加广告" icon="ui-icon-plus">
+                            <p:ajax event="click" listener="#{globalDictBean.addNewEntity(0)}"
+                                    oncomplete=""/>
+                        </p:commandButton>
+                        <p:commandButton value="添加推广" icon="ui-icon-plus">
+                            <p:ajax event="click" listener="#{globalDictBean.addNewEntity(1)}"
+                                    oncomplete=""/>
+                        </p:commandButton>
+                    </f:facet>
+
+                    <p:column headerText="序号" sortBy="#{info.globalDict.id}">
+                        <h:outputText value="#{info.globalDict.id}"/>
+                    </p:column>
+
+                    <p:column headerText="类型">
+                        <h:outputText value="#{info.globalDict.dictName}"/>
+                    </p:column>
+
+                    <p:column headerText="详情">
+                        <p:outputPanel>
+                            <p:panelGrid>
+                                <ui:repeat value="#{info.globaldictJsonList}" var="vo">
+                                    <p:row>
+                                        <p:column colspan="1">
+                                            #{vo.image}
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            #{vo.productModelType}
+                                        </p:column>
+                                        <p:column colspan="1">
+                                            #{vo.composing}
+                                        </p:column>
+                                    </p:row>
+                                </ui:repeat>
+
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:column>
+
+                    <p:column headerText="操作">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-note" value="查看" >
+                                <p:ajax event="click" listener="#{globalDictBean.selectEntity(info)}" />
+                            </p:commandButton>
+
+                        </p:outputPanel>
+
+                    </p:column>
+
+
+                </p:dataTable>
+
+                <p:blockUI block="form1" trigger="infoTable">
+                    数据加载中，请稍等<br/>
+                    <p:graphicImage name="/images/ajax-loader.gif"/>
+                </p:blockUI>
+            </h:form>
+
+        </ui:define>
+        <ui:include src="detail.xhtml"/>
+
+    </ui:composition>
+</h:body>
+</html>

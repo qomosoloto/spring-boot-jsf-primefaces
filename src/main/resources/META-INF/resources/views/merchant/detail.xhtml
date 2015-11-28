@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" onShow="PF('detailDialog').initPosition();"
+              style="width: 90%; height: 80%;" position="top center" closeOnEscape="true" draggable="true"
+              header="商户详情">
+
+        <h:form id="save_merchant_form">
+            <p:growl id="growl_save" showDetail="true" sticky="false"/>
+
+            <div style="max-height: 640px;min-height: 400px;width: 100%;overflow: auto;">
+                <p:panelGrid styleClass="detailPanelGrid">
+                    <p:row>
+                        <p:column colspan="4" style="background-color: #aaaaaa;">基本信息</p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="name" value="商户名"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="name" value="" required="true" validatorMessage="商户名必输"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="account" value="账户名"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="account" value="" required="true"/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="initPwd" value="初始密码"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:password id="initPwd" required="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="repeatPwd" value="重复密码"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:password id="repeatPwd" required="true" value=""/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="商户状态"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:selectOneMenu>
+                                <f:selectItem itemLabel="正常" itemValue="0"/>
+                                <f:selectItem itemLabel="冻结" itemValue="1"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="联系人"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value=""/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="联系方式"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputMask value="" mask="(199) 9999-9999"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="联系地址"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value=""/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="主营业务"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText value=""/>
+                        </p:column>
+
+
+                    </p:row>
+
+
+                    <p:row>
+
+                        <p:column colspan="4" style="background-color: #aaaaaa;">
+                            <p:outputLabel value="法人信息"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="faren" value="商户法人"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="faren" value="" required="true"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="zhucehao" value="工商注册号"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="zhucehao" value="" required="true"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+
+                            <p:outputLabel for="farenlianxi" value="法人联系方式"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="farenlianxi" value=""/>
+                        </p:column>
+
+
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="4" style="background-color: #aaaaaa;">结算信息</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="bankAccount" value="银行卡账户"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="bankAccount" value="" required="true"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="bankInfo" value="开户行信息"/>
+                        </p:column>
+                        <p:column colspan="1">
+
+                            <p:inputText id="bankInfo" value="" required="true"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="wechatAccount" value="微信账号"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:password id="wechatAccount" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="aliAccount" value="支付宝账号"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:password id="aliAccount" value=""/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="zhouqi" value="结算周期(天)"/>
+                        </p:column>
+                        <p:column colspan="1">
+
+                            <p:inputText id="zhouqi" required="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="周期开始日"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:calendar showOn="button"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <p:commandButton value="保存" oncomplete="PF('detailDialog').hide()" validateClient="true"
+                                                 actionListener="#{infoBean.saveBean}"
+                                                 update=":save_merchant_form"/>
+
+                                <p:commandButton value="返回" onclick="PF('detailDialog').hide()">
+
+                                </p:commandButton>
+                            </p:outputPanel>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </h:form>
+
+
+    </p:dialog>
+</f:view>
+</html>

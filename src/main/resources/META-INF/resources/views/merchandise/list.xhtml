@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <h:form id="form1">
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable resizableColumns="true" var="info" value="#{merchandiseBean.lazyDataModel}"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{add} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorPosition="top" editable="true" rowKey="#{info.sku.id}"
+                             currentPageReportTemplate="当前展示{startRecord} - {endRecord}条,共{totalRecords}条"
+                             emptyMessage="no data........"
+                             rowsPerPageTemplate="5,10,15" id="infoTable" lazy="true">
+
+                    <f:facet name="{add}">
+                        <p:commandButton value="添加商品" icon="ui-icon-plus">
+                            <p:ajax event="click" listener="#{merchandiseBean.addNewEntity(0)}" update=":detailDialog"
+                                    oncomplete="PF('detailDialog').show()"/>
+                        </p:commandButton>
+                    </f:facet>
+
+                    <!--<f:facet name="header" style="text-align: left;">-->
+
+                    <!--</f:facet>-->
+
+                    <p:column headerText="编号" sortBy="#{info.sku.codeSn}">
+                        <h:outputText value="#{info.sku.codeSn}"/>
+                    </p:column>
+
+                    <p:column headerText="商品名">
+                        <h:outputText value="#{info.sku.name}"/>
+                    </p:column>
+                    <p:column headerText="预览">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-note" value="查看">
+                                <p:ajax event="click" listener="#{merchandiseBean.selectEntity(info)}"
+                                        update=":previewDialog" oncomplete="PF('previewDialog').show();"/>
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+
+                    <p:column headerText="商户名">
+                        <h:outputText value="#{info.sku.owner.name}"/>
+                    </p:column>
+                    <p:column headerText="可用红包">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <h:outputLabel rendered="#{not empty info.sku.maxVoucher}" value="#{info.sku.maxVoucher}"/>
+                            <p:outputLabel value="不可用" rendered="#{empty info.sku.maxVoucher}"
+                            />
+                        </p:outputPanel>
+                    </p:column>
+                    <p:column headerText="状态">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <h:outputText
+                                    value="#{info.sku.skuStatus=='ONLINE'?'已上架':(info.sku.skuStatus=='OFFLINE'?'已下架':'其他')}"/>
+                        </p:outputPanel>
+                    </p:column>
+
+                    <p:column headerText="二维码" width="100">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-note" value="查看" rendered="#{not empty
+                            info.jsonInfo.qrcodeUrl}">
+                                <p:ajax event="click" listener="#{merchandiseBean.selectEntity(info)}"
+                                        update="qrDialog" oncomplete="PF('qrDialog').show();"/>
+                            </p:commandButton>
+                            <p:outputLabel rendered="#{empty
+                            info.jsonInfo.qrcodeUrl}" value="老数据,无二维码"/>
+                        </p:outputPanel>
+                    </p:column>
+
+                    <p:column headerText="管理">
+                        <p:outputPanel layout="block" style="text-align: center;">
+
+                            <p:commandLink value="商品上架"
+                                           rendered="${info.sku.skuStatus.ordinal() == 2||info.sku.skuStatus.ordinal() == 5}">
+                                <p:ajax event="click" listener="#{merchandiseBean.onOffline(info,info.sku.skuStatus)}"
+
+                                        update=":form1"/>
+                            </p:commandLink>
+
+                            <p:commandLink value="商品下架" rendered="${info.sku.skuStatus.ordinal() == 4}">
+                                <p:ajax event="click" listener="#{merchandiseBean.onOffline(info,info.sku.skuStatus)}"
+
+                                        update=":form1"/>
+                            </p:commandLink>
+
+                        </p:outputPanel>
+
+                    </p:column>
+
+                    <p:column headerText="操作">
+                        <p:outputPanel layout="block" style="text-align: center;">
+
+                            <p:commandButton icon="ui-icon-note" value="查看/编辑"
+                                             rendered="${info.sku.entityStatus.ordinal() != 2}">
+                                <p:ajax event="click" listener="#{merchandiseBean.selectEntity(info)}"
+                                        update=":detailDialog"
+                                        oncomplete="PF('detailDialog').show()"/>
+                            </p:commandButton>
+
+                            <p:commandButton icon="ui-icon-trash" value="删除"
+                                             rendered="${info.sku.entityStatus.ordinal() != 2}">
+                                <p:ajax event="click" listener="#{merchandiseBean.selectEntity(info)}"
+                                        update=":form1"
+                                        oncomplete="PF('delDialog').show()"/>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+
+                    </p:column>
+
+
+                </p:dataTable>
+                <p:blockUI block="form1" trigger="infoTable">
+                    数据加载中，请稍等<br/>
+                    <p:graphicImage name="/images/ajax-loader.gif"/>
+                </p:blockUI>
+            </h:form>
+
+            <ui:include src="detail.xhtml"/>
+            <ui:include src="previewDialog.xhtml"/>
+            <ui:include src="confirm.xhtml"/>
+            <ui:include src="qr.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

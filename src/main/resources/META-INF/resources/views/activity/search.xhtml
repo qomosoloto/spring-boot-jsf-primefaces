@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－>商品管理
+        </f:facet>
+
+    </p:panel>
+    <h:form id="search_form">
+        <p:panel>
+
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="ID" for="id"/>
+                    <p:inputText id="id" value="" type="text"/>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="名称" for="name"/>
+                    <p:inputText id="name" value="" type="text"/>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="actType" value="活动类型筛选"/>
+                    <p:selectOneMenu id="actType" styleClass="menu" panelStyleClass="panel">
+                        <!--选项里的itemValue不该使用ordinal,应该用name-->
+                        <f:selectItem itemLabel="请选择" itemValue=""/>
+                        <f:selectItem itemLabel="线下活动" itemValue="0"/>
+                        <f:selectItem itemLabel="游戏" itemValue="1"/>
+                        <f:selectItem itemLabel="分享" itemValue="２"/>
+                        <f:selectItem itemLabel="签到" itemValue="３"/>
+
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="actStartTime1" value="时间"/>
+                    <p:calendar id="actStartTime1" showOn="button" style="width: 100px;"
+                                pattern="yyyy-MM-dd"/>至<p:calendar id="actStartTime2"
+                                                                   pattern="yyyy-MM-dd"
+                                                                   showOn="button"/>
+                </div>
+
+            </div>
+
+
+            <div class="ui-grid-row">
+                <p:outputPanel layout="block" style="text-align: center;">
+                    <p:commandButton value="搜索" icon="ui-icon-search" validateClient="true" process="@this"
+                                     actionListener="#{activityBean.paramSearch}"
+                                     update=":form1:infoTable">
+
+                    </p:commandButton>
+
+                    <p:commandButton value="重置" icon="ui-icon-search" process="@this"
+                                     actionListener="#{activityBean.paramReset}">
+                        <p:ajax update="search_form" resetValues="true"/>
+                    </p:commandButton>
+                </p:outputPanel>
+            </div>
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

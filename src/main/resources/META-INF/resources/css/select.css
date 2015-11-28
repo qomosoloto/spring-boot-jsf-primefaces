@@ -1,0 +1,51 @@
+.menu .ui-selectonemenu-label {
+    width: 100%;
+}
+
+.panel .ui-selectonemenu-list {
+    width: 90%;
+}
+
+.ui-selectonemenu {
+    width: 174px !important;
+}
+
+.ui-selectonemenu-label {
+    width: 40% !important;
+}
+
+.ui-selectmanycheckbox label, .ui-selectoneradio label {
+    margin-left: 10px;
+}
+
+/*校驗*號樣式*/
+.ui-outputlabel-rfi {
+    color: red;
+}
+
+.theme-class {
+    width: 90% !important;
+}
+
+/*菜單寬度*/
+ul.ui-menu-child {
+    white-space: nowrap;
+    width: auto !important;
+}
+
+/*菜單分隔符*/
+.custom-separator-style {
+    background: #A8A8A8;
+    border: none;
+    width: 1px;
+    clear: none;
+    height: 22px;
+    margin: 4px 6px 0;
+    box-shadow: none;
+}
+
+/*detail中的panelGrid樣式,去除了邊框border*/
+.detailPanelGrid.ui-panelgrid > * > tr,
+.detailPanelGrid.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}

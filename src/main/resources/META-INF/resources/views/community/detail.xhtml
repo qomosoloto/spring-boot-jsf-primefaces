@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" style="width: 80%;max-height: 90%; overflow: scroll;"
+              onShow="PF('detailDialog').initPosition();"  position="top center"
+              showHeader="true">
+        <f:facet name="header">
+            小区详情
+        </f:facet>
+        <h:form id="save_merchant_form">
+
+            <!--todo validateMessage未添加-->
+            <p:panelGrid>
+                <p:row>
+                    <p:column colspan="8" style="background-color: #aaaaaa;">基本情况</p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="name" value="小区名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="name" value="" required="true" validatorMessage="小区名称必输"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="account" value="省"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <!--todo 下拉-->
+                        <p:inputText id="account" value="" required="true"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="initPwd" value="城市"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <!--todo 下拉-->
+                        <p:password id="initPwd" required="true" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="repeatPwd" value="区县"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <!--todo 下拉-->
+                        <p:password id="repeatPwd" required="true" value=""/>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="address" value="地址"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="address" required="true" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="langtitude" value="经度"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="langtitude" required="true" value=""/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="latitude" value="维度"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="latitude" required="true" value=""/>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+
+                    <p:column colspan="8" style="background-color: #aaaaaa;">
+                        <p:outputLabel value="物业情况"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="faren" value="物业公司"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="faren" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="zhucehao" value="物业电话"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="zhucehao" value=""/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="juweihui" value="居委会电话"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="juweihui" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="pm" value="物业经理"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="pm" placeholder="输入物业经理电话" value=""/>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">快递</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone" value=""/>
+                    </p:column>
+
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片">
+                            <p:ajax event="click" process="@none" update="@none" listener="#{upload.clickUploadBtn}"
+                                    oncomplete="PF('upload_photo').show()"/>
+                        </p:commandButton>
+                        <!--<p:commandLink onclick="PF('upload_photo').show()" value="shangchuang" ajax="false" />-->
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+                </p:row>
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">送水</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName1" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName1" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone1" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">便利店</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName2" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName2" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone2" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone2" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">便利店</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName3" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName3" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone3" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone3" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">开锁</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName4" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName4" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone4" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone4" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">维修</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName5" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName5" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone5" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone5" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8" rowspan="1">
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+
+                </p:row>
+
+
+                <p:row>
+                    <!--todo 有图片上传-->
+                    <p:column colspan="8" style="background-color: #aaaaaa;">外卖</p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressName6" value="名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="expressName6" value=""/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="expressPhone6" value="电话"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:inputText id="expressPhone6" value=""/>
+                    </p:column>
+                    <p:column colspan="４">
+                        <p:commandButton value="上传图片"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="8">
+
+                        <div class="ui-grid-row" style="background-color: #aaaaaa;height: 140px;">
+
+                        </div>
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="8">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton value="保存" oncomplete="PF('detailDialog').hide()" validateClient="true"
+                                             actionListener="#{infoBean.saveBean}"
+                                             update=":save_merchant_form"/>
+
+                            <p:commandButton value="返回" onclick="PF('detailDialog').hide()">
+
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+
+        </h:form>
+
+
+    </p:dialog>
+
+</f:view>
+</html>

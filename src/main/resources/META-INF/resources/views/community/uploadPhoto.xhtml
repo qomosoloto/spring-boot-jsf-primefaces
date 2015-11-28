@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="upload_photo" widgetVar="upload_photo" position="center top">
+
+        <h:form id="form_upload">
+            <p:remoteCommand name="processSelection" partialSubmit="true"
+                             action="#{infoBean.pageBlockui}"
+                             update=":form_upload"
+                             oncomplete="processResult();"/>
+            <input type="hidden" id="url-now"/>
+
+        </h:form>
+        <script type="text/javascript">
+
+            function beginBack(pic_source_url, name) {
+                console.info("上传完后自动执行" + ss);
+                if ($.trim($("#url-now").val()) == "") {
+                    alert("请选择图片");
+                    return;
+                }
+                //  创建 html文本,展示图片 , 也可以用backbean来做
+
+
+                //普通的html组件调用这个js
+                //将想要传递到后台的动态值封装成json格式的值，传给p:remoteCommand,然后由这个组件传给bean方法
+                processSelection([{"name": 'url', "value": pic_source_url}, {"name": 'name', "value": name}]);
+            }
+
+            function processResult() {
+                console.info(".............process...complete..........");
+            }
+        </script>
+
+    </p:dialog>
+</f:view>
+</html>

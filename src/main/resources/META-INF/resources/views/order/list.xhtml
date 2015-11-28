@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+                    <h:outputScript library="js" name="orders.js"/>
+                    <p:growl widgetVar="msgs" id="msgs" showDetail="true"/>
+
+
+                    <p:dataTable resizableColumns="true" var="info" value="#{orderBean.lazyModel}"
+                                 paginator="true"
+                                 rows="10" liveResize="true"
+                                 paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 paginatorPosition="top" editable="true" rowKey="#{info.id}"
+                                 currentPageReportTemplate="当前展示{startRecord} - {endRecord}条,共{totalRecords}条"
+                                 emptyMessage="no data........" selection="#{orderBean.selectedOrder}"
+                                 rowsPerPageTemplate="5,10,15" id="infoTable" lazy="true">
+                        <f:facet name="header">
+
+                            <p:outputPanel layout="block">
+                                <p:commandButton styleClass="btnClicked" value="全部订单(默认展示)" id="allBtn"
+                                                 widgetVar="allBtn">
+                                    <p:ajax event="click" listener="#{orderBean.changeOrders(0)}"
+                                            update=":form1:infoTable"
+                                            oncomplete="updateSelectedButton(0);"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="已支付订单" widgetVar="paidSuccessBtn"
+                                                 id="paidSuccessBtn">
+                                    <p:ajax event="click" listener="#{orderBean.changeOrders(1)}"
+                                            update=":form1:infoTable"
+                                            oncomplete="updateSelectedButton(1);"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="未支付订单" id="notPaidBtn" widgetVar="notPaidBtn">
+                                    <p:ajax event="click" listener="#{orderBean.changeOrders(2)}"
+                                            update=":form1:infoTable"
+                                            oncomplete="updateSelectedButton(2);"/>
+                                </p:commandButton>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column headerText="订单编号" sortBy="#{info.order.codeSn}">
+                            <h:outputText value="#{info.order.codeSn}"/>
+                        </p:column>
+
+                        <p:column headerText="订单类型">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText
+                                        value="#{info.orderSkuEntry.sku.product.productType=='PHYSICAL'?'实物订单':'虚拟订单'}"/>
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column headerText="订单状态">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText
+                                        value="#{info.order.orderStatus=='SUCCESS'?'成功':(info.order.orderStatus=='CLOSED'?'关闭':info.order.orderStatus=='PAYING'?'支付中':info.order.orderStatus)}"/>
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column headerText="下单用户">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText
+                                        value="#{info.order.buyer.name==''?(info.orderInfo.receiverName==''?info.orderInfo.receiverName:''):info.order.buyer.name}"/>
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column headerText="用户手机">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.orderInfo.phoneNumber}"/>
+                            </p:outputPanel>
+                        </p:column>
+                        <p:column headerText="收货地址">
+                            <h:outputText value="#{info.orderInfo.address}"/>
+                        </p:column>
+                        <p:column headerText="下单时间">
+                            <h:outputText value="#{info.order.createdTime}"/>
+                        </p:column>
+                        <p:column headerText="商品名">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.orderSkuEntry.sku.name}"/>
+                            </p:outputPanel>
+                        </p:column>
+
+                        <p:column headerText="数量">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.orderSkuEntry.quantity}"/>
+                            </p:outputPanel>
+                        </p:column>
+
+                        <p:column headerText="物流信息">
+                            <h:outputText value=""/>
+                        </p:column>
+
+                        <p:column headerText="红包抵扣">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.order.voucherAmount}"/>
+                            </p:outputPanel>
+                        </p:column>
+
+
+                        <p:column headerText="支付金额">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.orderSkuEntry.total}"/>
+                            </p:outputPanel>
+                        </p:column>
+
+                        <p:column headerText="是否处理">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <h:outputText value="#{info.order.codeSn}"/>
+                            </p:outputPanel>
+                        </p:column>
+
+                        <p:column headerText="操作" width="186">
+                            <p:outputPanel layout="block" style="text-align: center;">
+
+                                <p:commandButton value="查看">
+                                    <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                            oncomplete="PF('detailDialog').show();"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="验证">
+                                    <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                            oncomplete="PF('detailDialog').show();"/>
+                                </p:commandButton>
+
+
+                            </p:outputPanel>
+
+                        </p:column>
+
+
+                    </p:dataTable>
+
+                </h:form>
+
+
+            </p:panel>
+
+            <ui:include src="detail.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

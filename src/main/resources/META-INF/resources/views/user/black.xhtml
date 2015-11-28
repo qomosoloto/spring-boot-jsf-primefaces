@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:dataTable resizableColumns="true" var="info" value="#{userBean.userList}" paginator="true"
+                                 rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 paginatorPosition="bottom" editable="true"
+                                 emptyMessage="no data........"
+                                 rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+                        <p:column headerText="手机号" sortBy="#{info.codeSn}">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="用户昵称" sortBy="#{info.codeSn}">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="红包账户(元)" sortBy="#{info.codeSn}">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="领取红包总额">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="现金账户(元)">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="积分账户">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="支付次数">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+                        <p:column headerText="支付总额">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+
+
+                        <p:column headerText="注册时间" sortBy="#{info.createdTime}">
+                            <p:calendar readonly="true" value="#{info.createdTime}" disabled="true"
+                                        pattern="yyyy/MM/dd hh:MM:ss"/>
+                        </p:column>
+                        <p:column headerText="最后登录时间" sortBy="#{info.lastLoginTime}">
+                            <p:calendar readonly="true" value="#{info.lastLoginTime}" disabled="true"
+                                        pattern="yyyy/MM/dd hh:MM:ss"/>
+                        </p:column>
+
+
+                        <p:column headerText="操作">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <p:commandLink value="查看">
+                                    <p:ajax event="click" listener="#{userBean.selectEntity(info)}"
+                                            oncomplete="PF('detailDialog').show();" update=":detailDialog"/>
+                                </p:commandLink>
+
+                                <p:commandLink value="恢复">
+                                    <p:ajax event="click" listener="#{userBean.changeBlackGrey(info,0)}"
+                                            oncomplete="PF('delDialog').show()"/>
+                                </p:commandLink>
+                                <p:commandLink value="拉灰">
+                                    <p:ajax event="click" listener="#{userBean.changeBlackGrey(info,2)}"
+                                            oncomplete="PF('delDialog').show()"/>
+                                </p:commandLink>
+                            </p:outputPanel>
+
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+
+            <ui:include src="detail.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

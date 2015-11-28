@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+
+
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－><p:commandLink value="订单管理"></p:commandLink>
+        </f:facet>
+
+    </p:panel>
+    <p:panel>
+        <h:form id="search_form">
+
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="codeSn" value="订单编号"/>
+                    <p:inputText id="codeSn" placeholder="请输入订单编号"/>
+                </div>
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="buyerPhone" value="买家手机号码"/>
+                    <p:inputText id="buyerPhone" placeholder="请输入手机号码"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="merchandiseName" value="商品名称"/>
+                    <p:inputText id="merchandiseName" placeholder="输入商品关键字"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="orderType" value="订单类型"/>
+                    <p:selectOneMenu id="orderType" styleClass="menu">
+                        <f:selectItem itemLabel="全部" itemValue="-1"/>
+                        <f:selectItem itemLabel="实物订单" itemValue="0"/>
+                        <f:selectItem itemLabel="虚拟订单" itemValue="1"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="ifHandled" value="是否处理"/>
+                    <p:selectOneMenu id="ifHandled" styleClass="menu" panelStyleClass="panel">
+                        <f:selectItem itemLabel="全部" itemValue="-1"/>
+                        <f:selectItem itemLabel="是" itemValue="0"/>
+                        <f:selectItem itemLabel="否" itemValue="1"/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="transportInfo" value="物流信息"/>
+                    <p:selectOneMenu id="transportInfo" styleClass="menu" onchange="transportInfoChange(event)"
+                                     panelStyleClass="panel">
+                        <f:selectItem itemLabel="全部" itemValue="-1"/>
+                        <f:selectItem itemLabel="已填写" itemValue="０"/>
+                        <f:selectItem itemLabel="未填写" itemValue="１"/>
+                        <script type="text/javascript">
+                            function transportInfoChange(event) {
+                                console.info("change event : ", event);
+                            }
+                        </script>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="transportNumber" value="物流单号"/>
+                    <p:inputText id="transportNumber" placeholder="输入物流单号"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+
+                <p:outputLabel value="下单时间"/>
+                <p:calendar widgetVar="dateStart" id="dateStart" binding="#{dateStart}" showOn="button"
+                            pattern="yyyy-MM-dd"/>
+                至
+                <p:calendar widgetVar="dateEnd" id="dateEnd" pattern="yyyy-MM-dd"
+                            showOn="button">
+
+                    <!--<f:validator binding="#{dateRangeValidator}"/>-->
+                    <p:message for="dateEnd" display="tooltip"/>
+
+                    <script type="text/javascript">
+                        /**
+                         * Faces Validator
+                         */
+                        PrimeFaces.validator['dateRangeValidator'] = {
+
+                            validate: function (element, value) {
+                                var date = PF('dateStart').getDate();
+                                var dateEnd = PF('dateEnd').getDate();
+                                var startDate = new Date(date.getFullYear(), date.getMonth(), date.getDay());
+                                var endDate = new Date(dateEnd.getFullYear(), date.getMonth(), date.getDay());
+                                console.info("startDate", startDate);
+                                console.info("endDate", endDate);
+
+                                if (!compareDate(startDate, endDate)) {
+                                    PF('msgs').renderMessage({
+                                        "summary": "Validate Error!",
+                                        "detail": "结束日期必须大于起始日期",
+                                        "severity": "warn"
+                                    });
+                                }
+                            }
+                        };
+
+                        function compareDate(dateStart, dateEnd) {
+                            return dateStart.getTime() &lt; dateEnd.getTime();
+                        }
+                    </script>
+                </p:calendar>
+
+            </div>
+            <div class="ui-grid-row">
+
+                <p:outputPanel layout="block" style="text-align: center;">
+                    <p:commandButton value="搜索" icon="ui-icon-search" validateClient="true" process="@this"
+                                     actionListener="#{orderBean.paramSearch}"
+                                     update=":form1:infoTable">
+
+                    </p:commandButton>
+
+                    <p:commandButton value="重置" icon="ui-icon-search" process="@this"
+                                     actionListener="#{orderBean.paramReset}">
+                        <p:ajax update="search_form" resetValues="true"/>
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+
+        </h:form>
+    </p:panel>
+</f:view>
+</html>

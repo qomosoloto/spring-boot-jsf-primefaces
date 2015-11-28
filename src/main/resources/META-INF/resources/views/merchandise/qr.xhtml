@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="qrDialog" widgetVar="qrDialog">
+        <p:outputPanel>
+
+            <p:panelGrid>
+                <f:facet name="header">
+                    二维码
+                </f:facet>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel value="产品名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel value="商品名"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel value="商品编号"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel value="二维码"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel value="#{merchandiseBean.selectedSkuVo.sku.product.name}"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel value="#{merchandiseBean.selectedSkuVo.sku.name}"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel value="#{merchandiseBean.selectedSkuVo.sku.codeSn}"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:graphicImage
+                                url="http://wangyuxin.qiniudn.com/#{merchandiseBean.selectedSkuVo.jsonInfo.qrcodeUrl}?imageView2/1/w/240/h/180"/>
+                    </p:column>
+                </p:row>
+
+
+            </p:panelGrid>
+
+
+        </p:outputPanel>
+    </p:dialog>
+</f:view>
+</html>

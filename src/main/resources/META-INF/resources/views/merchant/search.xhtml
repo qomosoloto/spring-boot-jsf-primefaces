@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－>商户管理
+        </f:facet>
+
+    </p:panel>
+
+    <h:form id="search_form">
+        <p:panel>
+
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="商户名"/>
+                    <p:inputText id="search_name" value="" placeholder="" type="text"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="商户状态"/>
+                    <p:selectOneMenu id="search_type">
+                        <!--选项里的itemValue不该使用ordinal,应该用name-->
+                        <f:selectItem itemLabel="选择状态" itemValue=""/>
+                        <f:selectItem itemLabel="正常" itemValue="0"/>
+                        <f:selectItem itemLabel="冻结" itemValue="1"/>
+                        <f:selectItem itemLabel="全部" itemValue=""/>
+                    </p:selectOneMenu>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="账户名"/>
+                    <p:inputText id="search_account" value="" placeholder="" type="text"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="商户编号"/>
+                    <p:inputText id="search_serialno" value="" placeholder="" type="text"/>
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+                <p:outputPanel layout="block" style="text-align: center;">
+                    <p:commandButton value="搜索" icon="ui-icon-search">
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+        >
+<h:head>
+    <ui:param name="root" value="#{request.contextPath}/"/>
+    <meta http-equiv="X-UA-Compatible" content="EmulateIE8"/>
+    <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="shortcut icon" type="image/x-ico"
+          href="#{request.contextPath}/resources/images/favicon.ico"></link>
+
+    <style type="text/css">
+        .ui-widget {
+            font-size: 14px;
+            padding: 6px 6px;
+        }
+
+        .header {
+            background-color: #cccccc;
+            border: 1px solid #dddddd;
+            padding: 10px 0;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        body {
+            background: #e7e7e7;
+            padding: 0px 10px;
+        }
+
+        .ui-grid-row {
+            padding: 4px 4px;
+        }
+
+        .hasDatepicker {
+            width: 100px;
+        }
+
+        .ui-selectonemenu-label {
+            width: 80% !important;
+        }
+    </style>
+
+
+    <title>管理系统</title>
+    <h:outputStylesheet library="css" name="select.css"/>
+</h:head>
+<h:body style="padding: 0px;margin:0px;">
+
+
+    <div class="ui-grid-responsive" style="margin: 0px;padding: 0px;">
+
+        <div class="ui-grid-row" style="min-height:300px;margin: 0px;padding: 0px;">
+
+            <!-- Header Facelets -->
+            <ui:insert name="header">
+                <ui:include src="/templates/header.xhtml"/>
+            </ui:insert>
+
+            <!-- Content Facelets -->
+            <ui:insert name="content1">
+
+            </ui:insert>
+
+
+            <ui:insert name="content2">
+
+            </ui:insert>
+
+
+            <ui:insert name="upload">
+
+            </ui:insert>
+        </div>
+
+        <!-- Footer Facelets -->
+        <ui:insert name="footer">
+            <ui:include src="/templates/footer.xhtml"/>
+        </ui:insert>
+
+    </div>
+</h:body>
+</html>

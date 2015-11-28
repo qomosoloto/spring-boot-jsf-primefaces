@@ -1,0 +1,57 @@
+[
+  {
+    "userStatus": "ACTIVE",
+    "phoneNumber": "4001699518",
+    "name": "嘉漾公司",
+    "role": 0,
+    "gender": "UNKNOW",
+    "password": "admin",
+    "passwordSalt": "admin",
+    "primaryAccount": {
+      "type": "ASSET",
+      "name": "公司主账号",
+      "nameShadow": "公司主账号",
+      "cash": 0.00,
+      "frozenCash": 0.00,
+      "voucher": 0.00,
+      "frozenVoucher": 0.00,
+      "point": 0.00,
+      "frozenPoint": 0.00,
+      "gameTimes": 0.00,
+      "frozenGameTimes": 0.00,
+      "accountStatus": "ACTIVE",
+      "id": 1,
+      "lastModifiedTime": {
+        "date": {
+          "year": 2015,
+          "month": 10,
+          "day": 26
+        },
+        "time": {
+          "hour": 9,
+          "minute": 0,
+          "second": 41,
+          "nano": 0
+        }
+      },
+      "codeSn": "30150000000000021001",
+      "entityStatus": "ACTIVE"
+    },
+    "id": 1,
+    "lastModifiedTime": {
+      "date": {
+        "year": 2015,
+        "month": 10,
+        "day": 26
+      },
+      "time": {
+        "hour": 9,
+        "minute": 0,
+        "second": 41,
+        "nano": 0
+      }
+    },
+    "codeSn": "30150000000000021001",
+    "entityStatus": "ACTIVE"
+  }
+]

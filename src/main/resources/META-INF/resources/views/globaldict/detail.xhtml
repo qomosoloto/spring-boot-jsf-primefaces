@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" style="width: 100%; height: 80%;"
+              modal="true"
+              onShow="PF('detailDialog').initPosition();initDetail();" position="top center" closeOnEscape="true"
+              header="商品详情">
+        <h:form id="save_merchant_form">
+
+            <div style="max-height: 800px;min-height: 400px;width: 100%;overflow: auto;">
+
+                <p:panelGrid styleClass="detailPanelGrid">
+                    <p:row>
+                        <p:column colspan="8" style="background-color: #aaaaaa;">产品基本属性</p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="productName" value="产品名称"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:selectOneMenu id="productName" widgetVar="productName" required="true"
+                                             value="#{merchandiseBean.selectProductId}">
+                                <p:ajax event="change"
+                                        update="@form"
+                                        listener="#{merchandiseBean.selecteProductChange}"/>
+                                <f:selectItem itemLabel="选择产品" itemValue=""/>
+                                <f:selectItems
+                                        value="#{merchandiseBean.selectOneMenuProductsMap.entrySet()}"
+                                        var="entry" itemLabel="#{entry.value}" itemValue="#{entry.key}"/>
+                            </p:selectOneMenu>
+                            <p:message for="productName"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="queryCategory" value="商品类目"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:selectOneMenu id="queryCategory" widgetVar="queryCategory"
+                                             value="#{merchandiseBean.selectedSkuVo.sku.product.queryCategory}"
+                                             disabled="true">
+                                <f:selectItem itemLabel="类目" itemValue="-1"/>
+                                <f:selectItem itemLabel="娱乐" itemValue="10000"/>
+                                <f:selectItem itemLabel="美食" itemValue="10001"/>
+                                <f:selectItem itemLabel="丽人" itemValue="10002"/>
+                                <f:selectItem itemLabel="生活" itemValue="10003"/>
+                                <f:selectItem itemLabel="亲子" itemValue="10004"/>
+                                <f:selectItem itemLabel="旅游" itemValue="10005"/>
+                                <f:selectItem itemLabel="其他" itemValue="10006"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="merchantName" value="商户名称"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:selectOneMenu id="merchantName" required="true"
+                                             value="#{merchandiseBean.selectedSkuVo.sku.owner.name}">
+                                <f:selectItems value="#{merchandiseBean.selectOneMenuMerchantsMap.entrySet()}"
+                                               var="merchant" itemLabel="#{merchant.value}"
+                                               itemValue="#{merchant.key}"/>
+                                <p:message for="merchantName"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel for="productType" value="产品类型"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:selectOneMenu id="productType"
+                                             value="#{merchandiseBean.selectedSkuVo.sku.product.productType}"
+                                             disabled="true">
+                                <f:selectItem itemLabel="虚拟产品" itemValue="VIRTUAL"/>
+                                <f:selectItem itemLabel="实物产品" itemValue="PHYSICAL"/>
+                            </p:selectOneMenu>
+
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="invetory" value="库存[个]"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="invetory" required="true"
+                                         value="#{merchandiseBean.selectedSkuVo.sku.inventory}"
+                                         requiredMessage="库存必须填写"/>
+                            <p:message for="invetory"/>
+                        </p:column>
+
+                        <p:column colspan="1">
+                            <p:outputLabel for="unitPrice" value="售价[元]"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="unitPrice" required="true"
+                                         value="#{merchandiseBean.selectedSkuVo.sku.unitPrice}"/>
+                            <p:message for="unitPrice"/>
+                        </p:column>
+
+                        <p:column colspan="1">
+                            <p:outputLabel for="ifVoucher" value="可用红包"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:inputText id="ifVoucherHidden" widgetVar="ifVoucherHidden" readonly="true"
+                                         value="#{merchandiseBean.selectedSkuVo.jsonInfo.ifVoucher}"
+                                         style="display: none;"/>
+                            <p:selectOneRadio id="ifVoucher" onclick="voucherClick(this)" widgetVar="ifVoucher"
+                                              value="#{merchandiseBean.selectedSkuVo.jsonInfo.ifVoucher}">
+                                <f:selectItem itemLabel="是" itemValue="true"/>
+                                <f:selectItem itemLabel="否" itemValue="false"/>
+                            </p:selectOneRadio>
+                            <script type="text/javascript">
+
+                                /**
+                                 * 展示商品详情页初始化
+                                 */
+                                function initDetail() {
+                                    var val = PF('ifVoucherHidden').getJQ().val();
+                                    if (val == 'true') {
+                                        $("#ifVoucherDiv").show();
+                                    } else {
+                                        $("#ifVoucherDiv").hide();
+                                    }
+                                }
+
+                                function voucherClick(obj) {
+                                    var selectedValue = obj.value;
+                                    console.info("selectedValue is ", selectedValue);
+                                    PF('ifVoucherHidden').getJQ().val(selectedValue);
+                                    if (selectedValue == 'true') {
+                                        console.info("show:");
+                                        $("#ifVoucherDiv").show();
+                                    } else {
+                                        console.info("hide:");
+                                        $("#ifVoucherDiv").hide();
+                                    }
+                                }
+
+                                /**
+                                 * 点击激活的图片,不允许打开该图片
+                                 * @param item
+                                 * @param event
+                                 */
+                                function openNewTab(item, event) {
+                                    if ($(item).parent().hasClass('active')) {
+                                        event.stopImmediatePropagation();
+                                    }
+                                }
+
+                                function extPropertyCrudResult() {
+                                    console.info("................extPropertyCrudResult..........")
+                                }
+
+                                function addExtProperty() {
+
+                                    console.info("............addExtProperty...........")
+                                    extPropertyCrud([
+                                        {"name": 'propKey', "value": 'ssssss'},
+                                        {"name": 'propKey', "value": 'url'}
+                                    ]);
+                                }
+
+                                function deleteExtProperty() {
+                                    console.info("............deleteExtProperty...........")
+                                    extPropertyCrud([
+                                        {"name": 'propKey', "value": 'ssssss'},
+                                        {"name": 'propKey', "value": 'url'}
+                                    ]);
+                                }
+                            </script>
+                        </p:column>
+                        <p:column colspan="2">
+                            <f:facet name="header">
+                                sssss
+                            </f:facet>
+
+                            <div id="ifVoucherDiv" class="ui-grid-row" style="display: none;">
+                                <div class="ui-grid-col-4">
+                                    <p:outputLabel for="maxVoucher" value="最高抵用金额[元]"/>
+                                </div>
+                                <div class="ui-grid-col-2">
+
+                                    <p:inputText id="maxVoucher" style="width: 50px;"
+                                                 value="#{merchandiseBean.selectedSkuVo.sku.maxVoucher}"/>
+                                </div>
+
+                                <div class="ui-grid-col-4">
+                                    <p:outputLabel for="maxDiscount" value="最高抵用比例[%]"/>
+                                </div>
+                                <div class="ui-grid-col-2">
+
+                                    <p:inputText id="maxDiscount" style="width: 50px;"
+                                                 value="#{merchandiseBean.selectedSkuVo.jsonInfo.max_discount}"/>
+                                </div>
+
+
+                            </div>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="预览图片"/>
+
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:graphicImage id="previewPicture"
+                                            url="http://wangyuxin.qiniudn.com/#{merchandiseBean.selectProductVo.product.picture}?imageView2/1/w/240/h/180"
+                                            rendered="#{not empty merchandiseBean.selectProductVo.product.picture}"/>
+                            <p:outputLabel id="previewPictureInfo" value="暂无预览，您可以到产品管理中编辑"
+                                           rendered="#{empty merchandiseBean.selectProductVo.product.picture}"/>
+                        </p:column>
+
+                        <p:column colspan="1">
+                            <p:outputLabel value="详情图片"/>
+                        </p:column>
+
+                        <p:column colspan="5">
+
+                            <p:outputLabel value="没有详情图,请到产品编辑中添加图片"
+                                           rendered="#{empty merchandiseBean.selectedSkuPhotos}"/>
+                            <p:contentFlow id="detailPictures" value="#{merchandiseBean.selectedSkuPhotos}" var="image">
+                                <p:graphicImage url="http://wangyuxin.qiniudn.com/#{image.url}"
+                                                styleClass="content" onclick="openNewTab(this,event)">
+                                    <!--custom html-->
+                                </p:graphicImage>
+
+
+                            </p:contentFlow>
+
+
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="info" value="详情预览"/>
+                        </p:column>
+
+                        <p:column colspan="7">
+                            <p:editor id="info" rows="2" cols="50" controls="copy" disabled="true"
+                                      value="#{merchandiseBean.selectedSkuVo.sku.product.info}"
+                                      widgetVar="info"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="8" style="background-color: #aaaaaa;">
+                            <p:outputLabel value="产品扩展属性"/>
+                            请按照 {属性名:属性值} 的形式添加扩展属性,属性名必须用半角双引号包裹起来,扩展属性之间需要用半角逗号隔开,
+                            例如[{"sssssss":12},{"ffffff":'哈哈哈'},{"dfasdfas":'试试吧'}],删除的时候不要动[],最后一个属性的大括号后面不要有逗号
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel for="formatExtProps" value="扩展属性"/>
+                        </p:column>
+
+                        <p:column colspan="7">
+                            <p:editor id="formatExtProps" rows="2" cols="50" controls="copy" height="80"
+                                      value="#{merchandiseBean.selectedSkuVo.jsonInfo.merchandiseExtProperties}"
+                                      widgetVar="formatExtProps"/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="8">
+                            <p:outputPanel layout="block" style="text-align: center;">
+                                <p:commandButton value="保存" validateClient="true"
+                                                 actionListener="#{merchandiseBean.saveMerchandise}"
+                                                 icon="ui-icon-check" process="save_merchant_form"
+                                                 update=":form1,:save_merchant_form"/>
+
+                                <p:commandButton value="返回" icon="ui-icon-trash" onclick="PF('detailDialog').hide()">
+
+                                </p:commandButton>
+                            </p:outputPanel>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+
+
+        </h:form>
+
+    </p:dialog>
+</f:view>
+</html>

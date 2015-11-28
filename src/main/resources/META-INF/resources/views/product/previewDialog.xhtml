@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="previewDialog" widgetVar="previewDialog" style="width: 80%;height: 80%;"
+              closeOnEscape="true" draggable="true"
+              header="预览"
+              modal="true" onShow="PF('previewDialog').initPosition();" position="top center">
+
+        <h:form id="preview_form">
+            <div style="min-height: 200px;max-height: 640px;min-width: 200px;padding: 40px;overflow: auto;">
+                <h:outputText value="#{productBean.selectedProduct.info}"
+                              escape="false"/>
+
+                <h:outputText value="暂无预览"
+                              rendered="#{fn:length(fn:trim(productBean.selectedProduct.info))==0||productBean.selectedProduct.info==null}"
+                        />
+            </div>
+        </h:form>
+
+
+    </p:dialog>
+</f:view>
+</html>

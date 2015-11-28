@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-3">
+                            <p:commandButton icon="ui-icon-search" value="初始化商户数据"
+                                             actionListener="#{initializeBean.initializeMerchantJsonFile}"
+                                             update="form1:msgs"/>
+                        </div>
+                    </div>
+                </h:form>
+            </p:panel>
+
+        </ui:define>
+
+        <ui:define name="insert">
+
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

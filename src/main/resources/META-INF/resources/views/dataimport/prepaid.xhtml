@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <h:form id="form1">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:fileUpload id="upload" fileUploadListener="#{dataImportBean.handleFileUpload}"
+                              update=":form1:infoTable"
+                              label="导入" mode="advanced" auto="true"/>
+
+                <p:dataTable resizableColumns="true" var="info" value="#{dataImportBean.accountList}" paginator="true"
+                             rows="10"
+                             paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorPosition="top" editable="true" rowKey="#{info.id}"
+                             currentPageReportTemplate="当前展示{startRecord} - {endRecord}条,共{totalRecords}条"
+                             emptyMessage="no data........"
+                             rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+                    <p:column headerText="序号" sortBy="#{info.id}">
+                        <h:outputText value="#{info.id}"/>
+                    </p:column>
+
+                    <p:column headerText="卡号" sortBy="#{info.name}">
+                        <h:outputText value="#{info.name}"/>
+                    </p:column>
+                    <p:column headerText="过期时间" width="720">
+                        <h:outputText value="#{info.expireDate}"/>
+                    </p:column>
+                    <p:column headerText="产品ＩＤ">
+                        <h:outputText value="#{info.codeSn}"/>
+                    </p:column>
+                    <p:column headerText="类型">
+                        <h:outputText value="#{info.type}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:blockUI block="form1" trigger="infoTable">
+                    数据加载中，请稍等<br/>
+                    <p:graphicImage name="/images/ajax-loader.gif"/>
+                </p:blockUI>
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

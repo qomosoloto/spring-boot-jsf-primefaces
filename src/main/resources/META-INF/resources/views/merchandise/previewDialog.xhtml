@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="previewDialog" widgetVar="previewDialog" style="width: 80%;height: 98%;" header="预览"
+              draggable="true" resizable="false"
+              modal="true" onShow="PF('previewDialog').initPosition();" position="center top" closeOnEscape="true"
+            >
+        <h:form id="preview_form">
+
+            <div style="min-height: 200px;max-height: 640px;min-width: 200px;padding: 0px 0px 40px 0px;margin: 0px 0px 40px 0px;overflow: auto;">
+                <div class="ui-grid-row llllll">
+
+                    <h:outputText value="#{merchandiseBean.selectedSkuVo.sku.product.info}"
+                                  escape="false"/>
+                </div>
+            </div>
+        </h:form>
+
+    </p:dialog>
+</f:view>
+</html>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+                    <p:growl widgetVar="msgs" id="msgs" showDetail="true"/>
+
+
+                    <p:tabView id="orderTabView">
+                        <p:ajax event="tabChange" listener="#{orderBean.onTabChange}" update=":form1"/>
+
+                        <p:tab title="全部">
+                            <p:dataTable resizableColumns="true" var="info" value="#{orderBean.lazyModel}"
+                                         paginator="true"
+                                         rows="10" liveResize="true"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         paginatorPosition="bottom" editable="true" rowKey="#{info.id}"
+                                         emptyMessage="no data........" selection="#{orderBean.selectedOrder}"
+                                         rowsPerPageTemplate="5,10,15" id="infoTable3" lazy="false">
+
+
+
+                                <p:column headerText="订单编号" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="订单类型" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+                                <p:column headerText="订单状态" sortBy="#{info.orderStatus}">
+                                    <h:outputText value="#{info.orderStatus}"/>
+                                </p:column>
+                                <p:column headerText="下单用户">
+                                    <h:outputText value="#{info.buyer.name}"/>
+                                </p:column>
+                                <p:column headerText="下单时间">
+                                    <h:outputText value="#{info.createdTime}"/>
+                                </p:column>
+                                <p:column headerText="商品名">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="数量">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="物流信息">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="红包抵扣">
+                                    <h:outputText value="#{info.voucherAmount}"/>
+                                </p:column>
+
+
+                                <p:column headerText="支付金额">
+                                    <h:outputText value="#{info.totalAmount}"/>
+                                </p:column>
+
+                                <p:column headerText="是否处理">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="操作" width="186">
+                                    <p:outputPanel layout="block" style="text-align: center;">
+
+                                        <p:commandButton value="查看">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show();"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton value="验证">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show();"/>
+                                        </p:commandButton>
+
+
+                                    </p:outputPanel>
+
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab title="已支付">
+                            <p:dataTable resizableColumns="true" var="info" value="#{orderBean.paidOrderList}"
+                                         paginator="true"
+                                         rows="10" liveResize="true"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         paginatorPosition="bottom" editable="true" rowKey="#{info.id}"
+                                         emptyMessage="no data........" selection="#{orderBean.selectedOrder}"
+                                         rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+
+
+                                <p:column headerText="订单编号" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="订单类型" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+                                <p:column headerText="订单状态" sortBy="#{info.orderStatus}">
+                                    <h:outputText value="#{info.orderStatus}"/>
+                                </p:column>
+                                <p:column headerText="下单用户">
+                                    <h:outputText value="#{info.buyer.name}"/>
+                                </p:column>
+                                <p:column headerText="下单时间">
+                                    <h:outputText value="#{info.createdTime}"/>
+                                </p:column>
+                                <p:column headerText="商品名">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="数量">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="物流信息">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="红包抵扣">
+                                    <h:outputText value="#{info.voucherAmount}"/>
+                                </p:column>
+
+
+                                <p:column headerText="支付金额">
+                                    <h:outputText value="#{info.totalAmount}"/>
+                                </p:column>
+
+                                <p:column headerText="是否处理">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="操作" width="186">
+                                    <p:outputPanel layout="block" style="text-align: center;">
+
+                                        <p:commandButton value="查看">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show();"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton value="验证">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show();"/>
+                                        </p:commandButton>
+
+
+                                    </p:outputPanel>
+
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:tab>
+
+                        <p:tab title="未支付">
+                            <p:dataTable resizableColumns="true" var="info" value="#{orderBean.notPaidOrderList}"
+                                         paginator="true"
+                                         rows="10" liveResize="true"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         paginatorPosition="bottom" editable="true" rowKey="#{info.id}"
+                                         emptyMessage="no data........" selection="#{orderBean.selectedOrder}"
+                                         rowsPerPageTemplate="5,10,15" id="infoTable2" lazy="false">
+
+
+
+                                <p:column headerText="订单编号" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="订单类型" sortBy="#{info.codeSn}">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+                                <p:column headerText="订单状态" sortBy="#{info.orderStatus}">
+                                    <h:outputText value="#{info.orderStatus}"/>
+                                </p:column>
+                                <p:column headerText="下单用户">
+                                    <h:outputText value="#{info.buyer.name}"/>
+                                </p:column>
+                                <p:column headerText="下单时间">
+                                    <h:outputText value="#{info.createdTime}"/>
+                                </p:column>
+                                <p:column headerText="商品名">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="数量">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="物流信息">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="红包抵扣">
+                                    <h:outputText value="#{info.voucherAmount}"/>
+                                </p:column>
+
+
+                                <p:column headerText="支付金额">
+                                    <h:outputText value="#{info.totalAmount}"/>
+                                </p:column>
+
+                                <p:column headerText="是否处理">
+                                    <h:outputText value="#{info.codeSn}"/>
+                                </p:column>
+
+                                <p:column headerText="操作" width="186">
+                                    <p:outputPanel layout="block" style="text-align: center;">
+
+                                        <p:commandButton value="查看">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show()"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton value="验证">
+                                            <p:ajax event="click" listener="#{orderBean.selectEntity(info)}"
+                                                    oncomplete="PF('detailDialog').show()"/>
+                                        </p:commandButton>
+
+
+                                    </p:outputPanel>
+
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </p:tab>
+
+
+                    </p:tabView>
+
+                </h:form>
+
+
+            </p:panel>
+
+            <ui:include src="detail.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

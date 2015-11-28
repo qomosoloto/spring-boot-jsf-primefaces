@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog header="确定要这么做吗？" id="delDialog" widgetVar="delDialog" modal="true"
+              onshow="PF('delDialog').initPosition();">
+        <h:form id="form2">
+            <h:panelGrid columns="2" cellpadding="5" id="addPanel">
+                <p:commandButton value="确定" actionListener="#{userBean.deleteEntity}" update=":form1:infoTable"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+                                 oncomplete="PF('delDialog').hide()"/>
+                <p:commandButton value="取消" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+                                 onclick="PF('delDialog').hide()"/>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+</f:view>
+</html>

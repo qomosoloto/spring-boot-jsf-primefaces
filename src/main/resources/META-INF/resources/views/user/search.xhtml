@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－><p:commandLink value="用户管理" rendered="#{userBean.tabIndex==0}"></p:commandLink><p:commandLink
+                value="用户管理/灰名单" rendered="#{userBean.tabIndex==1}"></p:commandLink><p:commandLink value="用户管理/黑名单"
+                                                                                                   rendered="#{userBean.tabIndex==2}"></p:commandLink>
+        </f:facet>
+
+    </p:panel>
+
+    <h:form id="search_form">
+        <p:panel>
+
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                    <p:outputLabel value="手机号码" for="phoneNumber"/>
+                    <p:inputText id="phoneNumber" value="" placeholder="" type="text"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <p:outputLabel for="createTime1" value="注册时间"/>
+                    <p:calendar id="createTime1" showOn="button" style="width: 100px;"
+                                pattern="yyyy-MM-dd"/>至<p:calendar id="createTime2"
+                                                                   pattern="yyyy-MM-dd"
+                                                                   showOn="button"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <p:outputLabel for="lastLoginTime1" value="上次登陆"/>
+                    <p:calendar id="lastLoginTime1" showOn="button" style="width: 100px;"
+                                pattern="yyyy-MM-dd"/>至<p:calendar id="lastLoginTime2"
+                                                                   pattern="yyyy-MM-dd"
+                                                                   showOn="button"/>
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+                <p:outputPanel layout="block" style="text-align: center;">
+                    <p:commandButton value="搜索" icon="ui-icon-search" validateClient="true" process="@this"
+                                     actionListener="#{userBean.paramSearch}"
+                                     update=":form1:infoTable">
+
+                    </p:commandButton>
+
+                    <p:commandButton value="重置" icon="ui-icon-search" process="@this"
+                                     actionListener="#{userBean.paramReset}">
+                        <p:ajax update="search_form" resetValues="true"/>
+                    </p:commandButton>
+
+
+                </p:outputPanel>
+
+            </div>
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

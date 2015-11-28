@@ -1,0 +1,50 @@
+#container1 {
+    width: 800px;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 2px dashed #999999;
+}
+
+#container2 {
+    width: 800px;
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 2px dashed #999999;
+}
+
+#photo_list1, #photo_list2 {
+    width: 100%;
+    overflow: hidden;
+}
+
+#photo_list1 li, #photo_list2 li {
+    width: 240px;
+    float: left;
+    padding: 2px 4px;
+    list-style: none;
+    overflow: hidden;
+}
+
+#photo_list1 li img, #photo_list2 li img {
+    display: block;
+}
+
+#photo_list1 li p {
+    width: 100%;
+    line-height: 14px;
+    word-break: break-all;
+    white-space: normal;
+}
+
+#photo_list2 li p {
+    width: 100%;
+    line-height: 14px;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.warn-message {
+    display: none;
+}

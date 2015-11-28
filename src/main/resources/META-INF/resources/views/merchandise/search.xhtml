@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+
+    <p:panel>
+        <f:facet name="header">
+            当前位置－－><p:commandLink value="商品管理"></p:commandLink>
+        </f:facet>
+
+    </p:panel>
+    <h:form id="search_form">
+        <p:panel>
+
+            <p:panelGrid styleClass="detailPanelGrid" style="width: 100%">
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="merchandiseName" value="商品名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="merchandiseName"
+                                     placeholder=""
+                                     type="text"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="merchantName" value="商户名称"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="merchantName"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="productCodeSn" value="产品编号"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="productCodeSn"
+                                     placeholder="" type="text"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="dateStart" value="上架时间"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:calendar id="dateStart" pattern="yyyy-MM-dd" readonlyInput="true"
+                                    widgetVar="dateStart" binding="#{dateStart}"
+                                    showOn="button"/>
+                        至
+                        <p:calendar widgetVar="dateEnd"
+                                    readonlyInput="true" pattern="yyyy-MM-dd" id="dateEnd"
+                                    showOn="button">
+                            <f:validator binding="#{dateRangeValidator}"/>
+                            <p:message for="dateEnd" display="tooltip"/>
+
+                            <script type="text/javascript">
+                                /**
+                                 * Faces Validator
+                                 */
+                                PrimeFaces.validator['dateRangeValidator'] = {
+
+                                    validate: function (element, value) {
+                                        var date = PF('dateStart').getDate();
+                                        var dateEnd = PF('dateEnd').getDate();
+                                        var startDate = new Date(date.getFullYear(), date.getMonth(), date.getDay());
+                                        var endDate = new Date(dateEnd.getFullYear(), date.getMonth(), date.getDay());
+                                        console.info("startDate", startDate);
+                                        console.info("endDate", endDate);
+
+                                        if (!compareDate(startDate, endDate)) {
+                                            PF('msgs').renderMessage({
+                                                "summary": "Validate Error!",
+                                                "detail": "结束日期必须大于起始日期",
+                                                "severity": "warn"
+                                            });
+                                        }
+                                    }
+                                };
+
+                                function compareDate(dateStart, dateEnd) {
+                                    return dateStart.getTime() &lt; dateEnd.getTime();
+                                }
+                            </script>
+                        </p:calendar>
+                    </p:column>
+
+
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="ifVoucher" value="可用红包"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:selectOneMenu id="ifVoucher" styleClass="menu" panelStyleClass="panel">
+                            <!--选项里的itemValue不该使用ordinal,应该用name-->
+                            <f:selectItem itemLabel="全部" itemValue="-1"/>
+                            <f:selectItem itemLabel="是" itemValue="0"/>
+                            <f:selectItem itemLabel="否" itemValue="1"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:outputLabel for="category" value="商品类目"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:selectOneMenu id="category" styleClass="menu" panelStyleClass="panel">
+                            <f:selectItem itemLabel="全部" itemValue="-1"/>
+                            <f:selectItem itemLabel="娱乐" itemValue="10000"/>
+                            <f:selectItem itemLabel="美食" itemValue="10001"/>
+                            <f:selectItem itemLabel="丽人" itemValue="10002"/>
+                            <f:selectItem itemLabel="生活" itemValue="10003"/>
+                            <f:selectItem itemLabel="亲子" itemValue="10004"/>
+                            <f:selectItem itemLabel="旅游" itemValue="10005"/>
+                            <f:selectItem itemLabel="其他" itemValue="10006"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="status" value="商品状态"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:selectOneMenu id="status" styleClass="menu" panelStyleClass="panel">
+                            <!--选项里的itemValue不该使用ordinal,应该用name-->
+                            <f:selectItem itemLabel="全部" itemValue="-1"/>
+                            <f:selectItem itemLabel="待上架" itemValue="0"/>
+                            <f:selectItem itemLabel="已上架" itemValue="1"/>
+                            <f:selectItem itemLabel="已下架" itemValue="2"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="productType" value="商品类型"/>
+                    </p:column>
+                    <p:column colspan="1">
+
+                        <p:selectOneMenu id="productType" styleClass="menu">
+                            <!--选项里的itemValue不该使用ordinal,应该用name-->
+                            <f:selectItem itemLabel="全部" itemValue="-1"/>
+                            <f:selectItem itemLabel="实物商品" itemValue="PHYSICAL"/>
+                            <f:selectItem itemLabel="虚拟商品" itemValue="VIRTUAL"/>
+                        </p:selectOneMenu>
+                    </p:column>
+
+
+                </p:row>
+                <p:row>
+
+                    <p:column colspan="8">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton value="搜索" icon="ui-icon-search" validateClient="true" process="@this"
+                                             actionListener="#{merchandiseBean.paramSearch}" ajax="true"
+                                             update=":form1:infoTable">
+
+                            </p:commandButton>
+
+                            <p:commandButton value="重置" icon="ui-icon-refresh" process="@this"
+                                             actionListener="#{merchandiseBean.paramReset}">
+                                <p:ajax update="search_form" resetValues="true"/>
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

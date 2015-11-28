@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="upload_photo" widgetVar="upload_photo" position="center" modal="true"
+              onShow="PF('upload_photo').initPosition();createUploader();">
+        <h:form>
+            <p:inputText style="display: none;" value="#{productBean.token}" widgetVar="up_toke"
+                         id="up_toke"/>
+
+            <h:outputScript library="js" name="moxie.js"/>
+            <h:outputScript library="js" name="plupload.dev.js"/>
+            <h:outputScript library="js" name="qiniu.js"/>
+            <!--<h:outputScript library="js" name="jquery-1.9.1.min.js"/>-->
+            <h:outputScript library="js" name="photo.js"/>
+
+            <h:outputScript library="js" name="ZeroClipboard.js"/>
+
+            <h:outputStylesheet library="css" name="upload.css"/>
+            <script type="text/javascript">
+                //  获取七牛上传token
+                var token = PF('up_toke').getJQ().val();
+                if ($.trim(token) != "") {
+                    console.info("|||||||||||||||||||||||||||||||||||||||||||||||upload token is ", token);
+
+                }
+
+                /**
+                 *创建文件上传控件实例
+                 * */
+                function createUploader() {
+                    //  如果是新建，则不允许上传
+
+                    console.info("|||||||||||||||||||||||||||||||||||||||||||||||");
+                    Photo.createUploader(token);
+                }
+
+
+            </script>
+            <style type="text/css">
+                #photo_list {
+                    width: 100%;
+                }
+
+                #photo_list li {
+                    width: 320px;
+                    height: 240px;
+                }
+            </style>
+            <div id="container1">
+                <a class="btn btn-lg btn-yellow " id="fileToUpload1"
+                   href="#" style="z-index: 1; width: 20%;">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <sapn>选择图片</sapn>
+                </a>
+
+                <div class="msg" style="display: block;">
+
+                    <ul id="photo_list" class="filelist">
+
+                    </ul>
+
+
+                </div>
+
+                <input type="hidden" id="url-now"/>
+
+                <!--0-preview photo,1-detai photos-->
+                <input type="hidden" id="photo_type"/>
+
+            </div>
+
+            <p:remoteCommand name="processSelection" partialSubmit="true"
+                             action="#{productBean.savePreviewPhoto}" update=":upload_photo"
+                             oncomplete="processResult()"/>
+
+
+            <script type="text/javascript">
+
+                function processResult() {
+                    //PF('upload_photo').hide();
+                }
+
+
+                /**
+                 * prieviewPhotos
+                 * @param ss
+                 * @param name
+                 */
+                function upload(type, url, name) {
+                    if ($.trim($("#url-now").val()) == "") {
+                        alert("请选择图片");
+                        return;
+                    }
+                    console.info("|||||||||||||||||||||||||||||||||||||||||||||||", type, "---", url, "--", name);
+                    //普通的html组件调用这个js
+                    //将想要传递到后台的动态值封装成json格式的值，传给p:remoteCommand,然后由这个组件传给bean方法
+                    processSelection([{"name": 'type', "value": type}, {"name": 'url', "value": url}, {
+                        "name": 'name',
+                        "value": name
+                    }]);
+                }
+            </script>
+
+        </h:form>
+    </p:dialog>
+</f:view>
+</html>

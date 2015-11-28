@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" style="width: 90%; height: 100%;overflow-y: scroll;"
+              modal="true" onShow="PF('detailDialog').initPosition();" position="top center"
+              header="产品详情">
+        <h:form id="save_merchant_form">
+            <p:growl id="growl_save" showDetail="true" sticky="false"/>
+            <!--todo validateMessage未添加-->
+
+        </h:form>
+    </p:dialog>
+</f:view>
+</html>

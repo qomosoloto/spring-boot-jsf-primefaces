@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" header="用户详情" position="top center" style="width: 80%;">
+        <p:tabView onTabShow="PF('detailDialog').initPosition();" dynamic="true">
+
+            <p:ajax event="tabChange" listener="#{userBean.onTabChange}"/>
+
+            <p:tab title="我的详情">
+
+                <p:panelGrid styleClass="detailPanelGrid">
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="手机号"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="用户昵称"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="注册时间"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="最近一次登陆时间"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="红包账户"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="现金账户"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="积分账户"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <p:outputLabel value="关注小区"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="1">
+                            <p:outputLabel value="收货地址"/>
+                        </p:column>
+                        <p:column colspan="1">
+                            <h:inputText readonly="true" value=""/>
+                        </p:column>
+
+                    </p:row>
+                </p:panelGrid>
+
+            </p:tab>
+
+
+            <p:tab title="红包账户">
+                <p:panelGrid columns="8" styleClass="detailPanelGrid">
+                    <p:outputLabel value="领取红包总金额(元)"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="领取红包总金额(元)"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="参加活动次数"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="签到次数"/>
+                    <h:inputText readonly="true" value=""/>
+                </p:panelGrid>
+                <p:dataTable value="#{infoBean.list}" var="info" emptyMessage="no data.......">
+                    <f:facet name="header">
+                        红包账户详情
+                    </f:facet>
+
+                    <p:column headerText="时间">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="数量(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="事件">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="余额(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:tab>
+
+
+            <p:tab title="现金账户">
+                <p:panelGrid columns="8" styleClass="detailPanelGrid">
+                    <p:outputLabel value="充值总金额(元)"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="现金账户余额(元)"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="充值卡充值次数"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="充值次数"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="最多补款方式"/>
+                    <h:inputText readonly="true" value=""/>
+                </p:panelGrid>
+                <p:dataTable value="#{infoBean.list}" var="info" emptyMessage="no data.......">
+                    <f:facet name="header">
+                        现金账户详情
+                    </f:facet>
+
+                    <p:column headerText="时间">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="数量(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="事件">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="余额(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="付款方式">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+
+
+            <p:tab title="积分账户">
+                <p:panelGrid columns="8" styleClass="detailPanelGrid">
+                    <p:outputLabel value="获得积分总值"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="积分账户余值"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="玩游戏次数"/>
+                    <h:inputText readonly="true" value=""/>
+
+                    <p:outputLabel value="积分换红包次数"/>
+                    <h:inputText readonly="true" value=""/>
+
+                </p:panelGrid>
+                <p:dataTable emptyMessage="no data.......">
+                    <f:facet name="header">
+                        积分账户详情
+                    </f:facet>
+                    <p:column headerText="时间">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="数量(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="事件">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                    <p:column headerText="余额(元)">
+                        <h:inputText readonly="true" value=""/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:tab>
+
+
+        </p:tabView>
+    </p:dialog>
+</f:view>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <h:form id="form1">
+
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable resizableColumns="true" var="info" value="#{productBean.lazyDataModel}"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{add} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             paginatorPosition="top" editable="true" emptyMessage="no data........"
+                             currentPageReportTemplate="当前展示{startRecord} - {endRecord}条,共{totalRecords}条"
+                             rowKey="#{info.sku.id}"
+                             rowsPerPageTemplate="5,10,15" id="infoTable" lazy="true">
+
+                    <f:facet name="{add}">
+                        <p:commandButton value="新增实物产品" icon="ui-icon-plus">
+                            <p:ajax event="click" listener="#{productBean.addNewEntity(0)}"
+                                    update=":detailDialog"
+                                    oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                        </p:commandButton>
+                        <p:commandButton value="新增虚拟产品" icon="ui-icon-plus">
+                            <p:ajax event="click" listener="#{productBean.addNewEntity(1)}"
+                                    update=":detailDialog"
+                                    oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                        </p:commandButton>
+                    </f:facet>
+
+                    <p:column headerText="产品编号" sortBy="#{info.product.codeSn}">
+                        <h:outputText value="#{info.product.codeSn}"/>
+                    </p:column>
+
+                    <p:column headerText="产品名称" sortBy="#{info.product.name}">
+                        <h:outputText value="#{info.product.name}"/>
+                    </p:column>
+                    <p:column headerText="产品预览">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-note" value="查看">
+                                <p:ajax event="click" listener="#{productBean.selectEntity(info)}"
+                                        update=":previewDialog" oncomplete="PF('previewDialog').show();"/>
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+                    <p:column headerText="类型">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:selectOneMenu value="#{info.product.productType}" disabled="true">
+                                <f:selectItem itemLabel="虚拟产品" itemValue="VIRTUAL"/>
+                                <f:selectItem itemLabel="实物产品" itemValue="PHYSICAL"/>
+                            </p:selectOneMenu>
+                        </p:outputPanel>
+                    </p:column>
+                    <p:column headerText="类目">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:selectOneMenu value="#{info.product.queryCategory}" disabled="true">
+                                <f:selectItem itemLabel="娱乐" itemValue="10000"/>
+                                <f:selectItem itemLabel="美食" itemValue="10001"/>
+                                <f:selectItem itemLabel="丽人" itemValue="10002"/>
+                                <f:selectItem itemLabel="生活" itemValue="10003"/>
+                                <f:selectItem itemLabel="亲子" itemValue="10004"/>
+                                <f:selectItem itemLabel="旅游" itemValue="10005"/>
+                                <f:selectItem itemLabel="其他" itemValue="10006"/>
+                            </p:selectOneMenu>
+                        </p:outputPanel>
+                    </p:column>
+
+
+                    <p:column headerText="操作">
+                        <p:outputPanel layout="block" style="text-align: center;">
+
+                            <p:commandButton icon="ui-icon-pencil" value="查看/编辑"
+                                             rendered="${info.product.entityStatus.ordinal() != 2}">
+                                <p:ajax event="click" listener="#{productBean.selectEntity(info)}"
+                                        update=":detailDialog"
+                                        oncomplete="PF('detailDialog').show()"/>
+                            </p:commandButton>
+
+                            <!--<p:commandButton icon="ui-icon-trash" value="delete"-->
+                            <!--rendered="{info.product.entityStatus.ordinal() != 2}">-->
+                            <!--<p:ajax event="click" listener="{productBean.selectEntity(info)}"-->
+                            <!--oncomplete="PF('delDialog').show()"/>-->
+                            <!--</p:commandButton>-->
+
+
+                        </p:outputPanel>
+
+                    </p:column>
+
+
+                </p:dataTable>
+
+                <p:blockUI block="form1" trigger="infoTable">
+                    数据加载中，请稍等<br/>
+                    <p:graphicImage name="/images/ajax-loader.gif"/>
+                </p:blockUI>
+            </h:form>
+
+            <ui:include src="detail.xhtml"/>
+            <ui:include src="previewDialog.xhtml"/>
+            <ui:include src="confirm.xhtml"/>
+
+        </ui:define>
+
+
+    </ui:composition>
+</h:body>
+</html>

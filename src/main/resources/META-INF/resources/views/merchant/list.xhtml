@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+
+</h:head>
+
+<h:body>
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content1">
+            <ui:include src="search.xhtml"/>
+        </ui:define>
+
+        <ui:define name="content2">
+
+            <p:panel>
+                <h:form id="form1">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:dataTable resizableColumns="true" var="info" value="#{merchantBean.userList}" paginator="true"
+                                 rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 paginatorPosition="bottom" editable="true"
+                                 emptyMessage="no data........"
+                                 rowsPerPageTemplate="5,10,15" id="infoTable" lazy="false">
+
+                        <!--<f:facet name="header" style="text-align: left;">-->
+                        <!--<p:outputPanel layout="block" style="text-align: left;">-->
+                        <!--<p:commandButton value="add" icon="ui-icon-plus"/>-->
+                        <!--<p:commandButton value="export" icon="ui-icon-plus"/>-->
+                        <!--</p:outputPanel>-->
+                        <!--</f:facet>-->
+
+                        <p:column headerText="商户编号" sortBy="#{info.codeSn}">
+                            <h:outputText value="#{info.codeSn}"/>
+                        </p:column>
+
+                        <p:column headerText="商户名">
+                            <h:outputText value="#{info.name}"/>
+                        </p:column>
+                        <p:column headerText="账户名">
+                            <h:outputText value="#{info.primaryAccount.name}"/>
+                        </p:column>
+                        <p:column headerText="联系人">
+                            <h:outputText value="#{info.name}"/>
+                        </p:column>
+                        <p:column headerText="联系方式">
+                            <h:outputText value="#{info.phoneNumber}"/>
+                        </p:column>
+                        <p:column headerText="状态">
+                            <h:outputText value="#{info.entityStatus}"/>
+                        </p:column>
+
+
+                        <p:column headerText="操作">
+                            <p:outputPanel layout="block" style="text-align: center;">
+
+                                <p:commandButton value="查看/修改">
+                                    <p:ajax event="click" listener="#{infoBean.select(info)}"
+                                            oncomplete="PF('detailDialog').show();PF('detailDialog').initPosition();"/>
+                                </p:commandButton>
+                            </p:outputPanel>
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                    <p:blockUI block="form1" trigger="infoTable">
+                        数据加载中，请稍等<br/>
+                        <p:graphicImage name="/images/ajax-loader.gif"/>
+                    </p:blockUI>
+                </h:form>
+            </p:panel>
+
+            <ui:include src="detail.xhtml"/>
+
+
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+</html>

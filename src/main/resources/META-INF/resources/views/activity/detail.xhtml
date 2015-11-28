@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <p:dialog id="detailDialog" widgetVar="detailDialog" style="width: 90%; height: 100%;overflow: scroll;"
+              onShow="PF('detailDialog').initPosition();" position="top center"
+              header="活动详情">
+        <h:form id="save_merchant_form">
+            <p:growl id="growl_save" showDetail="true"/>
+
+            <p:panelGrid>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="name" value="活动标题"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="name" value="#{activityBean.selectedSku.product.name}" required="true"
+                                     validatorMessage="活动标题不能为空"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:outputLabel for="actStartTime1" value="开始报名时间"/>-->
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:calendar required="true" requiredMessage="开始报名时间不能为空" id="actStartTime1" showOn="button"-->
+                                    <!--style="width: 100px;"-->
+                                    <!--pattern="yyyy-MM-dd"/>-->
+                        <!--至-->
+                        <!--<p:calendar id="actStartTime2" required="true"-->
+                                    <!--requiredMessage="开始报名时间不能为空"-->
+                                    <!--pattern="yyyy-MM-dd"-->
+                                    <!--showOn="button"/>-->
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">
+                        <!--<p:outputLabel for="onlineTime" value="上架时间"/>-->
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:calendar id="onlineTime" showOn="button" required="true" readonlyInput="true"-->
+                                    <!--value="#{activityBean.selectedSku.onlineTime}" style="width: 100px;"-->
+                                    <!--requiredMessage="上架时间不能为空"-->
+                                    <!--pattern="yyyy-MM-dd"/>-->
+                    </p:column>
+
+
+                    <p:column colspan="1">
+                        <!--<p:outputLabel for="onlineTime" value="下架时间"/>-->
+                    </p:column>
+                    <p:column colspan="1">
+                        <!--<p:calendar id="offlineTime"-->
+                                    <!--value="#{activityBean.selectedSku.offlineTime}"-->
+                                    <!--readonlyInput="true" required="true" requiredMessage="下架时间不能为空"-->
+                                    <!--pattern="yyyy-MM-dd"-->
+                                    <!--showOn="button"/>-->
+                    </p:column>
+
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="1">
+                        <!--<p:outputLabel for="qrTime1" value="扫码时间1"/>-->
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:calendar id="qrTime1" showOn="button" required="true" readonlyInput="true"-->
+                                    <!--requiredMessage="扫码时间1"-->
+                                    <!--value="#{activityBean.selectedSku.onlineTime}" style="width: 100px;"-->
+                                    <!--pattern="yyyy-MM-dd"/>-->
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:outputLabel for="qrTime2" value="扫码时间2"/>-->
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <!--<p:calendar id="qrTime2" showOn="button" required="true" readonlyInput="true"-->
+                                    <!--requiredMessage="扫码时间2"-->
+                                    <!--value="#{activityBean.selectedSku.onlineTime}" style="width: 100px;"-->
+                                    <!--pattern="yyyy-MM-dd"/>-->
+                    </p:column>
+
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="longitude" value="小区经度"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="longitude" value="#{activityBean.selectedSku.longitude}" required="true"
+                                     requiredMessage="小区经度不能为空"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="latitude" value="小区维度"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="latitude" value="#{activityBean.selectedSku.latitude}" required="true"
+                                     requiredMessage="小区维度不能为空"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="ifEnableRule" value="活动规则开关"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:selectOneRadio id="ifEnableRule" value="">
+                            <f:selectItem itemLabel="启用" itemValue="0"/>
+                            <f:selectItem itemLabel="禁用" itemValue="1"/>
+                        </p:selectOneRadio>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="sponsor" value="主办方"/>
+
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="sponsor" required="true" validatorMessage="主办方不能为空" value=""/>
+                    </p:column>
+
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="address" value="活动地址"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="address" value="" required="true" validatorMessage="活动地址不能为空"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="showMoney" value="展示金额"/>
+                    </p:column>
+                    <p:column colspan="1">
+                        <p:inputText id="showMoney" value="" required="true" validatorMessage="展示金额不能为空"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="singleVoucher" value="单个红包金额"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="singleVoucher" value="" required="true" validatorMessage="单个红包金额不能为空"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:outputLabel for="limitedVoucher" value="红包总限额"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="limitedVoucher" value="" required="true" validatorMessage="红包总限额不能为空"/>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel for="signUpLimited" value="总报名限额"/>
+                    </p:column>
+
+                    <p:column colspan="1">
+                        <p:inputText id="signUpLimited" value="" required="true" validatorMessage="总报名不能为空"/>
+                    </p:column>
+
+                </p:row>
+
+                <!--<p:row>-->
+                <!--<p:column colspan="1">-->
+                <!--<p:outputLabel for="activityRule" value="活动规则"/>-->
+                <!--</p:column>-->
+                <!--<p:column colspan="3">-->
+                <!--<div style="width: 100%;">-->
+                <!--<p:inputTextarea required="true" rows="10" cols="100" autoResize="true" counter="display"-->
+                <!--maxlength="1000"-->
+                <!--counterTemplate="{0} 个汉字可输入..." id="activityRule"-->
+                <!--value="#{activityBean.selectedSku.codeSn}"/>-->
+                <!--</div>-->
+                <!--<h:outputText id="display"/>-->
+                <!--</p:column>-->
+                <!--</p:row>-->
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:commandButton update="@none" oncomplete="PF('upload_photo').show();"
+                                         value="活动预览图"/>
+                    </p:column>
+
+                    <p:column colspan="3">
+                        <div class="col-row">
+
+                        </div>
+                    </p:column>
+
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:commandButton update="@none" oncomplete="PF('upload_photo').show();"
+                                         value="活动详情图"/>
+                    </p:column>
+                    <p:column colspan="3">
+                        <div class="col-row">
+
+                        </div>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="1">
+                        <p:outputLabel value="活动详情" for="content"/>
+                    </p:column>
+
+                    <p:column colspan="3">
+                        <p:editor id="content" required="true" validatorMessage="活动详情不能为空"
+                                  value="#{activityBean.selectedSku.info}"/>
+                    </p:column>
+                </p:row>
+
+
+                <p:row>
+                    <p:column colspan="4">
+                        <p:outputPanel layout="block" style="text-align: center;">
+                            <p:commandButton value="保存" oncomplete="PF('detailDialog').hide()" validateClient="true"
+                                             actionListener="#{infoBean.saveBean}"
+                                             update=":save_merchant_form"/>
+
+                            <p:commandButton value="返回" onclick="PF('detailDialog').hide()">
+
+                            </p:commandButton>
+                        </p:outputPanel>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+
+
+        </h:form>
+
+    </p:dialog>
+</f:view>
+</html>
