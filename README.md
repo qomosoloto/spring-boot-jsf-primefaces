@@ -1,14 +1,15 @@
-#admin-springboot
+#一个后台管理系统，刚接触ｊｓｆ一个月左右时间做的，做的还不完善．
 
 #运行
-1.  新建一个maven父工程,导入本工程及 data-model 作为子模块,启动运行
+1.  新建一个maven父工程,导入本工程及 data-model[再libs文件夹下] 作为子模块,
 
-mvn install:install-file
--DgroupId=com.shenbian.ng
--DartifactId=data-model
--Dversion=0.1-SNAPSHOT
--Dpackaging=jar
--Dfile=data-model-0.1-SNAPSHOT.jar
+>
+  mvn install:install-file
+  -DgroupId=com.shenbian.ng
+  -DartifactId=data-model
+  -Dversion=0.1-SNAPSHOT
+  -Dpackaging=jar
+  -Dfile=data-model-0.1-SNAPSHOT.jar
 
 
 #其他
